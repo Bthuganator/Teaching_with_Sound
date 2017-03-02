@@ -35,7 +35,7 @@ h6 {
     padding-bottom: 50px;
     text-align: center;
     color: #f8f8f8;
-    background: url(/media/blackboard.jpg) no-repeat center center;
+    background: url(https://firebasestorage.googleapis.com/v0/b/teaching-with-sound.appspot.com/o/Pictures%2Fblackboard.jpg?alt=media&token=55de96ff-ab53-4f63-ba4a-508ed9c39591) no-repeat center center;
     background-size: cover;
 }
 
@@ -116,7 +116,7 @@ h6 {
 .banner {
     padding: 100px 0;
     color: #f8f8f8;
-    background: url(/media/banner-bg.jpg) no-repeat center center;
+    background: url(https://firebasestorage.googleapis.com/v0/b/teaching-with-sound.appspot.com/o/Pictures%2Fbanner-bg.jpg?alt=media&token=b3c6cd34-cc36-43a2-8b6e-44bf9b68018e) no-repeat center center;
     background-size: cover;
 }
 

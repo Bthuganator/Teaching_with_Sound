@@ -245,10 +245,13 @@
         </div>
     </footer>
 
-<!-- Auth0 lock script -->
-    <script src="https://cdn.auth0.com/js/lock/10.8/lock.min.js"></script>
+<!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+
     <!-- jQuery -->
     <script src="../js/jquery-3.1.1.min.js"></script>
+    <!-- jQuery -->
+    <script src="../js/fbconfig.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
@@ -258,63 +261,12 @@
 	
 
     <script>
-    
-        const AUTH0_CLIENT_ID = "eKHJrriT5eciTyNabNMdv27b9yA3MMO5";
-        const AUTH0_DOMAIN = "trrobot.auth0.com";
-        $(document).ready(function() {
-              var lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
-                auth: { 
-                  params: { 
-                    scope: 'openid email' 
-                  }
-                }
-              });
-              
-              var userProfile;
-
-            $('.btn-login').click(function(e) {
-              e.preventDefault();
-              lock.show();
-              return false;
-            });
-            
-            lock.on("authenticated", function(authResult) {
-                lock.getProfile(authResult.idToken, function(error, profile) {
-                    if (error) {
-                        // Handle error
-                        return;
-                    }
-                    localStorage.setItem('id_token', authResult.idToken);
-                    
-                    // Display user information
-                    show_profile_info(profile);
-                   
-                    // global ajax Authorization setup
-                    $.ajaxPrefilter(function( options ) {
-            			if ( !options.beforeSend) {
-            				options.beforeSend = function (xhr) { 
-            					xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('id_token'));
-            				}
-            			}
-            		});
-                    
-                    // get task items from database
-                    //getItems();
-                });
-            });
-            
-            var show_profile_info = function(profile) {
-                alert(profile.nickname)
-             $('.nickname').text(profile.nickname);
-             $('.btn-login').hide();
-             $('.avatar').attr('src', profile.picture).show();
-             $('.btn-logout').show();
-            };
-              
-            
-        });
+        var context = {};
+        context.sounds = firebase.database().ref().child('sounds');
+        context.about = firebase.database().ref().child('about');
         
     </script>
 </body>
 
 </html>
+
