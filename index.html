@@ -1,18 +1,3 @@
-{{#context}}
-{
-    "services": {
-        "collection": "services",
-        "query": {},
-        "hints": {"$orderby": {"sort": 1}}
-    },
-    "sounds":{
-        "collection": "sounds",
-        "query": {"attribution" : {"$not" : ""}},
-        "hints": {"$orderby": {"attribution": 1}}
-    }
-}
-{{/context}}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,13 +47,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="#">{{settings.site.brand}}</a>
+                <a class="navbar-brand topnav" href="/">Teaching with Sound</a>
+                
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{{root}}/Sound-Board">Soundboard</a>
+                        <a href="/Sound-Board">Soundboard</a>
                     </li>
                     <li>
                         <a href="#about">About</a>
@@ -99,7 +85,7 @@
                         <ul class="list-inline intro-social-buttons">
                             
                             <li>
-                                <a href="{{root}}/Sound-Board" class="btn btn-default btn-lg"><i class="fa fa-music fa-fw"></i> <span class="network-name"> Go to the Sound Board</span></a>
+                                <a href="/Sound-Board" class="btn btn-default btn-lg"><i class="fa fa-music fa-fw"></i> <span class="network-name"> Go to the Sound Board</span></a>
                             </li>
                         </ul>
                     </div>
@@ -114,47 +100,47 @@
 
     <!-- Page Content -->
 <!--<input type="submit" class="btn-login" />-->
-
+<div id="app">
 	<a  name="about"></a>
-	{{#each services}}
-    	{{#ifCond @index '%' 2}}
-        <div class="content-section-a">
+	<template v-for="(a, index) in about">
+    	
+        <div class="content-section-a" v-if="index % 2">
              <div class="container">
                 <div class="row">
                     <div class="col-lg-5 col-sm-6">
                         <hr class="section-heading-spacer">
                         <div class="clearfix"></div>
-                        <h2 class="section-heading">{{{heading}}}</h2>
-                        <p class="lead">{{{body}}}</p>
+                        <h2 class="section-heading">{{a.heading}}</h2>
+                        <p class="lead">{{a.body}}</p>
                     </div>
                     <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                        <img class="img-responsive" src="/media/{{image.[0]}}" alt="">
+                        <img class="img-responsive" src="#" alt="">
                     </div>
                 </div>
     
             </div>
         </div>
-        {{else}}
-        <div class="content-section-b">
+        
+        <div class="content-section-b" v-else>
              <div class="container">
                 <div class="row">
                     <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
                         <hr class="section-heading-spacer">
                         <div class="clearfix"></div>
-                        <h2 class="section-heading">{{{heading}}}</h2>
-                        <p class="lead">{{{body}}}</p>
+                        <h2 class="section-heading">{{a.heading}}</h2>
+                        <p class="lead">{{a.body}}</p>
                     </div>
                     <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                        <img class="img-responsive" src="/media/{{image.[0]}}" alt="">
+                        <img class="img-responsive" src="#" alt="">
                     </div>
                 </div>
     
             </div>
         </div>
-        {{/ifCond}}
+        
         <!-- /.container -->
     <!-- /.content-section-a -->
-    {{/each}}
+    </template>
 
 	<a  name="contact"></a>
     <div class="banner">
@@ -193,24 +179,23 @@
     <a  name="credits"></a>
     <div class="container">
 
+        <!--<div class="credits-placeholder"></div>-->
         <div class="row">
             <div class="col-lg-3">
                 <h2>Sound Credits</h2>
             </div>
             <div class="col-lg-9 credits-well">
-                <div class="row">
-                    {{#each sounds}}
+                <div class="row" v-for="sound in sounds">
+                    
                         <div class="col-md-2">
-                            {{{attribution}}}
+                            {{sound.attribution}}
                         </div>
-                    {{/each}}
                 </div>
             </div>
         </div>
-
     </div>
     <!-- /.container -->
-
+</div>
     
 
     <!-- Footer -->
@@ -239,32 +224,35 @@
                             <a href="/#credits">Credits</a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted small">{{{settings.site.address}}}</p>
+                    <p class="copyright text-muted small">Teaching with Sound</p>
                 </div>
             </div>
         </div>
     </footer>
 
-<!-- Firebase -->
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>  
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
-
+    <!-- VueFire -->
+    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
     <!-- jQuery -->
     <script src="../js/jquery-3.1.1.min.js"></script>
-    <!-- jQuery -->
+    <!-- Firebase Config -->
     <script src="../js/fbconfig.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
-	
-	<!-- Bootstrap Core JavaScript -->
-    <script src="../js/handlebars-v4.0.5.js"></script>
-	
+    <script src="../js/bootstrap.min.js"></script>			
 
-    <script>
-        var context = {};
-        context.sounds = firebase.database().ref().child('sounds');
-        context.about = firebase.database().ref().child('about');
-        
+    <script>              
+        var soundsRef = firebase.database().ref().child("sounds");
+        var aboutRef = firebase.database().ref().child("about");
+        var app = new Vue({
+            el: '#app',                        
+            firebase: {
+                sounds: soundsRef,
+                about: aboutRef
+            }            
+        });        
     </script>
 </body>
 
