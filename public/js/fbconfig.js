@@ -4,7 +4,7 @@
     authDomain: "teaching-with-sound.firebaseapp.com",
     databaseURL: "https://teaching-with-sound.firebaseio.com",
     storageBucket: "teaching-with-sound.appspot.com",
-    messagingSenderId: "1049752919817"3
+    messagingSenderId: "1049752919817"
   };
   firebase.initializeApp(config);
 
