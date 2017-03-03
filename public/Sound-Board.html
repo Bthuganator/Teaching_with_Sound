@@ -1,13 +1,4 @@
-{{#context}}
-{
-    "sounds": {
-        "collection": "sounds",
-        "query": {},
-        "hints": {"$orderby": {"display_name": 1}}
-    }
- }
 
-{{/context}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,13 +17,13 @@
     <title>Teacher Soundboard</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="{{root}}/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -56,13 +47,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="/">{{settings.site.brand}}</a>
+                <a class="navbar-brand topnav" href="/">Teaching with Sound</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active">
-                        <a href="{{root}}/Sound-Board">Soundboard</a>
+                        <a href="/Sound-Board">Soundboard</a>
                     </li>
                     <li>
                         <a href="/#about">About</a>
@@ -78,65 +69,17 @@
     </nav>
 
 
-    
-    <div class="row sounds row-centered" style="margin-top:50px;">
-        {{#each sounds}}
-        <div class="col-md-3 sound-well col-centered" style="height:150px;">
+<div id="app">  
+    <div class="row sounds row-centered" style="margin-top:50px;">        
+        <div v-for="sound in sounds" class="col-md-3 sound-well col-centered" style="height:150px;">
             <button class="btn btn-primary play-sound" onclick="PlaySound(this)">
-                <span class="glyphicon glyphicon-play"></span> <span class="display-name">{{{display_name}}}</span>
+                <span class="glyphicon glyphicon-play"></span> <span class="display-name">{{sound.display_name}}</span>
                 <progress class="sound-progress" value="0" max="100"></progress>
-                <!--<div class="progress">
-                    <div class="progress-bar progress-bar-info" role="progressbar" style="width: 0%;">    
-                </div>
-                </div>-->
-                <audio class="hidden" src="{{{sound_url}}}" type="{{{audio_type}}}" autostart="false" codecs="mp3"></audio>
+                <audio class="hidden" :src="sound.sound_url" :type="sound.audio_type" autostart="false" codecs="mp3"></audio>
             </button>
         </div>
-        {{/each}}
     </div>
-    
-    <script>
-    var sound;
-    var duration;
-    function PlaySound(el) {      
-        $(el).parents('.sound-well').siblings().find('button .glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
-        if(sound != undefined)
-          {
-              sound.pause();
-              sound.currentTime = 0;
-          }
-          if(sound && $(el).children('.glyphicon').hasClass('glyphicon-stop')){
-              sound.pause();
-              sound.currentTime = 0;
-              $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
-          }
-          else{
-          sound = $(el).children('audio')[0]
-          duration = 0;//sound.duration;
-          sound.play()
-          sound.addEventListener("loadeddata", function() {
-             console.log("Audio data loaded");
-             console.log("Audio duration: " + this.duration);
-            });
-          $(el).children('.glyphicon').removeClass('glyphicon-play').addClass('glyphicon-stop')
-          $(sound).on("ended", function() {
-            $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
-            $($(el).find('.sound-progress')[0]).attr('value',0);
-        });
-       
-
-        $(sound).on('timeupdate', function() {
-            var w = 100*( sound.currentTime / sound.duration);
-            console.log('width: '+w)
-            //$($(el).find('.progress-bar')[0]).css("width", w+'%');
-            $($(el).find('.sound-progress')[0]).attr('value',w);
-        });
-          }
-        }
-    </script>
- 
-    
-
+</div>    
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -163,46 +106,69 @@
                             <a href="/#credits">Credits</a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted small">{{{settings.site.address}}}</p>
+                    <p class="copyright text-muted small">Teaching with Sound</p>
                 </div>
             </div>
         </div>
     </footer>
     
-    <!-- Auth0 lock script -->
-    <script src="https://cdn.auth0.com/js/lock/10.8/lock.min.js"></script>
-
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>  
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+    <!-- VueFire -->
+    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
     <!-- jQuery -->
-    <script src="/static/js/jquery.js"></script>
-
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <!-- Firebase Config -->
+    <script src="../js/fbconfig.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="/static/js/bootstrap.min.js"></script>
-    
-    <script>
-        $(function(){
-            var retrieve_profile = function() {
-                var id_token = localStorage.getItem('id_token');
-                if (id_token) {
-                  lock.getProfile(id_token, function (err, profile) {
-                    if (err) {
-                      return alert('There was an error getting the profile: ' + err.message);
-                    }
-                    // Display user information
-                    show_profile_info(profile);
-                    // enable api button
-                    $('.btn-api').removeAttr("disabled");
-                  });
-                }
-            };
-            
-            var show_profile_info = function(profile) {
-                alert(profile.nickname)
-             $('.nickname').text(profile.nickname);
-             $('.btn-login').hide();
-             $('.avatar').attr('src', profile.picture).show();
-             $('.btn-logout').show();
-            };
-        })
+    <script src="../js/bootstrap.min.js"></script>			
+
+    <script>              
+        var soundsRef = firebase.database().ref().child("sounds");
+        var app = new Vue({
+            el: '#app',                        
+            firebase: {
+                sounds: soundsRef
+            }            
+        });        
+
+        var sound;
+        var duration;
+        function PlaySound(el) {      
+            $(el).parents('.sound-well').siblings().find('button .glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+            if(sound != undefined)
+            {
+                sound.pause();
+                sound.currentTime = 0;
+            }
+            if(sound && $(el).children('.glyphicon').hasClass('glyphicon-stop')){
+                sound.pause();
+                sound.currentTime = 0;
+                $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+            }
+            else{
+                sound = $(el).children('audio')[0]
+                duration = 0;//sound.duration;
+                sound.play()
+                sound.addEventListener("loadeddata", function() {
+                    console.log("Audio data loaded");
+                    console.log("Audio duration: " + this.duration);
+                    });
+                $(el).children('.glyphicon').removeClass('glyphicon-play').addClass('glyphicon-stop')
+                $(sound).on("ended", function() {
+                    $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+                    $($(el).find('.sound-progress')[0]).attr('value',0);
+                });        
+                $(sound).on('timeupdate', function() {
+                    var w = 100*( sound.currentTime / sound.duration);
+                    console.log('width: '+w)
+                    //$($(el).find('.progress-bar')[0]).css("width", w+'%');
+                    $($(el).find('.sound-progress')[0]).attr('value',w);
+                });
+            }
+        }
     </script>
 
 </body>

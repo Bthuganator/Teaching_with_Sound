@@ -47,14 +47,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div class="content-placeholder"></div>
+                <a class="navbar-brand topnav" href="/">Teaching with Sound</a>
                 
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{{root}}/Sound-Board">Soundboard</a>
+                        <a href="/Sound-Board">Soundboard</a>
                     </li>
                     <li>
                         <a href="#about">About</a>
@@ -85,7 +85,7 @@
                         <ul class="list-inline intro-social-buttons">
                             
                             <li>
-                                <a href="{{root}}/Sound-Board" class="btn btn-default btn-lg"><i class="fa fa-music fa-fw"></i> <span class="network-name"> Go to the Sound Board</span></a>
+                                <a href="/Sound-Board" class="btn btn-default btn-lg"><i class="fa fa-music fa-fw"></i> <span class="network-name"> Go to the Sound Board</span></a>
                             </li>
                         </ul>
                     </div>
@@ -100,18 +100,18 @@
 
     <!-- Page Content -->
 <!--<input type="submit" class="btn-login" />-->
-
+<div id="app">
 	<a  name="about"></a>
-	{{#each about}}
-    	{{#ifCond @index '%' 2}}
-        <div class="content-section-a">
+	<template v-for="(a, index) in about">
+    	
+        <div class="content-section-a" v-if="index % 2">
              <div class="container">
                 <div class="row">
                     <div class="col-lg-5 col-sm-6">
                         <hr class="section-heading-spacer">
                         <div class="clearfix"></div>
-                        <h2 class="section-heading">{{{heading}}}</h2>
-                        <p class="lead">{{{body}}}</p>
+                        <h2 class="section-heading">{{a.heading}}</h2>
+                        <p class="lead">{{a.body}}</p>
                     </div>
                     <div class="col-lg-5 col-lg-offset-2 col-sm-6">
                         <img class="img-responsive" src="#" alt="">
@@ -120,15 +120,15 @@
     
             </div>
         </div>
-        {{else}}
-        <div class="content-section-b">
+        
+        <div class="content-section-b" v-else>
              <div class="container">
                 <div class="row">
                     <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
                         <hr class="section-heading-spacer">
                         <div class="clearfix"></div>
-                        <h2 class="section-heading">{{{heading}}}</h2>
-                        <p class="lead">{{{body}}}</p>
+                        <h2 class="section-heading">{{a.heading}}</h2>
+                        <p class="lead">{{a.body}}</p>
                     </div>
                     <div class="col-lg-5 col-sm-pull-6  col-sm-6">
                         <img class="img-responsive" src="#" alt="">
@@ -137,10 +137,10 @@
     
             </div>
         </div>
-        {{/ifCond}}
+        
         <!-- /.container -->
     <!-- /.content-section-a -->
-    {{/each}}
+    </template>
 
 	<a  name="contact"></a>
     <div class="banner">
@@ -179,11 +179,23 @@
     <a  name="credits"></a>
     <div class="container">
 
-        <div class=".credits-placeholder"></div>
-
+        <!--<div class="credits-placeholder"></div>-->
+        <div class="row">
+            <div class="col-lg-3">
+                <h2>Sound Credits</h2>
+            </div>
+            <div class="col-lg-9 credits-well">
+                <div class="row" v-for="sound in sounds">
+                    
+                        <div class="col-md-2">
+                            {{sound.attribution}}
+                        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.container -->
-
+</div>
     
 
     <!-- Footer -->
@@ -212,92 +224,35 @@
                             <a href="/#credits">Credits</a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted small">{{{settings.site.address}}}</p>
+                    <p class="copyright text-muted small">Teaching with Sound</p>
                 </div>
             </div>
         </div>
     </footer>
 
-<script id="brandNav" type="text/x-handlebars-template">​
-    <a class="navbar-brand topnav" href="#">{{settings.site.brand}}</a>
-​</script>
-<script id="creditsTemplate" type="text/x-handlebars-template">​
-<div class="row">
-            <div class="col-lg-3">
-                <h2>Sound Credits</h2>
-            </div>
-            <div class="col-lg-9 credits-well">
-                <div class="row">
-                    {{#each sounds}}
-                        <div class="col-md-2">
-                            {{{attribution}}}
-                        </div>
-                    {{/each}}
-                </div>
-            </div>
-        </div>
-  </script>
-<!-- Firebase -->
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>  
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
-
+    <!-- VueFire -->
+    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
     <!-- jQuery -->
     <script src="../js/jquery-3.1.1.min.js"></script>
-    <!-- jQuery -->
+    <!-- Firebase Config -->
     <script src="../js/fbconfig.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
-	
-	<!-- Bootstrap Core JavaScript -->
-    <script src="../js/handlebars-v4.0.5.js"></script>
-	
+    <script src="../js/bootstrap.min.js"></script>			
 
-    <script>                
-        var rootRef = firebase.database().ref();
-        var about;
-        var sounds;
-        firebase.database().ref("/about").on("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                // key
-                var key = childSnapshot.key;
-                // value, could be object
-                var childData = childSnapshot.val();
-                // Do what you want with these key/values here
-                about[key] = childData;
-            });
-        });
-        firebase.database().ref("/sounds").on("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                // key
-                var key = childSnapshot.key;
-                // value, could be object
-                var childData = childSnapshot.val();
-                // Do what you want with these key/values here
-                sounds[key] = childData;
-            });
-        });
-        context.settings = {"site":{"brand": "Teaching with Sound"}}
-        $(function () {
-            // Grab the template script
-            var theTemplateScript = $("#brandNav").html();
-
-            // Compile the template
-            var theTemplate = Handlebars.compile(theTemplateScript);
-
-            // Define our data object
-            var context = {"settings":{"site":{"brand": "Teaching with Sound"}}}
-
-            // Pass our data to the template
-            var theCompiledHtml = theTemplate(context);
-
-            // Add the compiled html to the page
-            $('.content-placeholder').html(theCompiledHtml);
-
-            var creditsTemp = $('#creditsTemplate').html();
-            var ctemp = Handlebars.compile(theTemplateScript);
-            var theCompiledHtml2 = ctemp(sounds);
-            $('.credits-placeholder').html(theCompiledHtml2)
-        });
+    <script>              
+        var soundsRef = firebase.database().ref().child("sounds");
+        var aboutRef = firebase.database().ref().child("about");
+        var app = new Vue({
+            el: '#app',                        
+            firebase: {
+                sounds: soundsRef,
+                about: aboutRef
+            }            
+        });        
     </script>
 </body>
 
