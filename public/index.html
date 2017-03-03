@@ -243,9 +243,10 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>			
 
-    <script>              
-        var soundsRef = firebase.database().ref().child("sounds");
-        var aboutRef = firebase.database().ref().child("about");
+    <script>            
+        var db = firebase.database().ref();
+        var soundsRef = db.child("sounds").orderByChild("attribution");
+        var aboutRef = db.child("about").orderByChild("sort");
         var app = new Vue({
             el: '#app',                        
             firebase: {

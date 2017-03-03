@@ -125,7 +125,8 @@
     <script src="../js/bootstrap.min.js"></script>			
 
     <script>              
-        var soundsRef = firebase.database().ref().child("sounds");
+        var db = firebase.database().ref();
+        var soundsRef = db.child("sounds").orderByChild("display_name");
         var app = new Vue({
             el: '#app',                        
             firebase: {
