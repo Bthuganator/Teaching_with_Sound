@@ -12,7 +12,8 @@ Vue.component('intro-section',{
                         <ul class="list-inline intro-social-buttons">
                             
                             <li>
-                                <a href="/Sound-Board.html" class="btn btn-default btn-lg"><i class="fa fa-music fa-fw"></i> <span class="network-name"> Go to the Sound Board</span></a>
+                                
+                                <router-link to="/Sound-Board" class="btn btn-default btn-lg"><i class="fa fa-music fa-fw"></i> <span class="network-name"> Go to the Sound Board</span></router-link>
                             </li>
                         </ul>
                     </div>
@@ -35,14 +36,15 @@ Vue.component('intro-section',{
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="/">Teaching with Sound</a>
+                <router-link class="navbar-brand topnav" to="/">Teaching with Sound</router-link>
+                
                 
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/Sound-Board.html">Soundboard</a>
+                        <router-link to="/Sound-Board">Soundboard</router-link>
                     </li>
                     <li>
                         <a href="#about">About</a>
@@ -64,11 +66,11 @@ Vue.component('intro-section',{
                 <div class="col-lg-12">
                     <ul class="list-inline">
                         <li>
-                            <a href="/">Home</a>
+                            <router-link to="/">Home</router-link>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="/Sound-Board.html">Soundboard</a>
+                            <router-link to="/Sound-Board">Soundboard</router-link>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
