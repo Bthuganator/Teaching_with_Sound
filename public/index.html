@@ -37,7 +37,47 @@
 
 <body>    
     <div id="app">
-    <nav-bar></nav-bar>    
+    <router-view></router-view>
+</div><!--end app-->        
+
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>  
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+    <!-- VueFire -->
+    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+    <!-- jQuery -->
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <!-- Firebase Config -->
+    <script src="../js/fbconfig.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- Custom Vue Components -->
+    <script src="../js/components.js"></script>			
+
+    <script>   
+        
+        var db = firebase.database().ref();
+        var soundsRef = db.child("sounds").orderByChild("attribution");
+        var aboutRef = db.child("about").orderByChild("sort");
+        // var app = new Vue({
+        //     el: '#app',                        
+        //     firebase: {
+        //         sounds: soundsRef,
+        //         about: aboutRef
+        //     }            
+        // });
+        var App = Vue.extend({});
+        var router = new VueRouter();
+
+        var Home = Vue.extend({
+            firebase: {
+                sounds: soundsRef,
+                about: aboutRef
+            } ,
+        template: `<nav-bar></nav-bar>    
     <intro-section></intro-section>
 
     <!-- Page Content -->
@@ -82,36 +122,23 @@
     <contact-section></contact-section>
     <a  name="credits"></a>        
     <credits-section :sounds="sounds"></credits-section>
-    <footer-section></footer-section>
-</div><!--end app-->        
+    <footer-section></footer-section>`;
+        });
 
-    <!-- Vue -->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>  
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
-    <!-- VueFire -->
-    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
-    <!-- jQuery -->
-    <script src="../js/jquery-3.1.1.min.js"></script>
-    <!-- Firebase Config -->
-    <script src="../js/fbconfig.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
-    <!-- Custom Vue Components -->
-    <script src="../js/components.js"></script>			
+        var SoundBoard = Vue.extend({
+        template: 'Look at all the people who work here!';
+        });
 
-    <script>   
-        
-        var db = firebase.database().ref();
-        var soundsRef = db.child("sounds").orderByChild("attribution");
-        var aboutRef = db.child("about").orderByChild("sort");
-        var app = new Vue({
-            el: '#app',                        
-            firebase: {
-                sounds: soundsRef,
-                about: aboutRef
-            }            
-        });        
+        router.map({
+                        '/': {
+                            component: Home
+                        },
+                        '/Sound-Board': {
+                            component: SoundBoard
+                        }
+                    });
+
+router.start(App, '#app');
     </script>
 </body>
 
