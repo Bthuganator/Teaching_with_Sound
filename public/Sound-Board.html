@@ -35,21 +35,12 @@
 </head>
 
 <body>
-    <nav-bar></nav-bar>
-
-
-<div id="app">  
-    <div class="row sounds row-centered" style="margin-top:50px;">        
-        <div v-for="sound in sounds" class="col-md-3 sound-well col-centered" style="height:150px;">
-            <button class="btn btn-primary play-sound" onclick="PlaySound(this)">
-                <span class="glyphicon glyphicon-play"></span> <span class="display-name">{{sound.display_name}}</span>
-                <progress class="sound-progress" value="0" max="100"></progress>
-                <audio class="hidden" :src="sound.sound_url" :type="sound.audio_type" autostart="false" codecs="mp3"></audio>
-            </button>
-        </div>
-    </div>
-</div>    
-    <footer-section></footer-section>
+    <div id="app">
+        <nav-bar></nav-bar>      
+        <sound-section :sounds="sounds"></sound-row>
+        <footer-section></footer-section>
+    </div>    
+    
     
     <!-- Vue -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>  
@@ -65,7 +56,7 @@
     <script src="../js/bootstrap.min.js"></script>			
     <!-- Custom Vue Components -->
     <script src="../js/components.js"></script>	
-    
+
     <script>              
         var db = firebase.database().ref();
         var soundsRef = db.child("sounds").orderByChild("display_name");
@@ -75,41 +66,41 @@
                 sounds: soundsRef
             }            
         });        
-        var sound;
-        var duration;
-        function PlaySound(el) {      
-            $(el).parents('.sound-well').siblings().find('button .glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
-            if(sound != undefined)
-            {
-                sound.pause();
-                sound.currentTime = 0;
-            }
-            if(sound && $(el).children('.glyphicon').hasClass('glyphicon-stop')){
-                sound.pause();
-                sound.currentTime = 0;
-                $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
-            }
-            else{
-                sound = $(el).children('audio')[0]
-                duration = 0;//sound.duration;
-                sound.play()
-                sound.addEventListener("loadeddata", function() {
-                    console.log("Audio data loaded");
-                    console.log("Audio duration: " + this.duration);
-                    });
-                $(el).children('.glyphicon').removeClass('glyphicon-play').addClass('glyphicon-stop')
-                $(sound).on("ended", function() {
-                    $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
-                    $($(el).find('.sound-progress')[0]).attr('value',0);
-                });        
-                $(sound).on('timeupdate', function() {
-                    var w = 100*( sound.currentTime / sound.duration);
-                    console.log('width: '+w)
-                    //$($(el).find('.progress-bar')[0]).css("width", w+'%');
-                    $($(el).find('.sound-progress')[0]).attr('value',w);
-                });
-            }
-        }
+        // var sound;
+        // var duration;
+        // function PlaySound(el) {      
+        //     $(el).parents('.sound-well').siblings().find('button .glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+        //     if(sound != undefined)
+        //     {
+        //         sound.pause();
+        //         sound.currentTime = 0;
+        //     }
+        //     if(sound && $(el).children('.glyphicon').hasClass('glyphicon-stop')){
+        //         sound.pause();
+        //         sound.currentTime = 0;
+        //         $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+        //     }
+        //     else{
+        //         sound = $(el).children('audio')[0]
+        //         duration = 0;//sound.duration;
+        //         sound.play()
+        //         sound.addEventListener("loadeddata", function() {
+        //             console.log("Audio data loaded");
+        //             console.log("Audio duration: " + this.duration);
+        //             });
+        //         $(el).children('.glyphicon').removeClass('glyphicon-play').addClass('glyphicon-stop')
+        //         $(sound).on("ended", function() {
+        //             $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+        //             $($(el).find('.sound-progress')[0]).attr('value',0);
+        //         });        
+        //         $(sound).on('timeupdate', function() {
+        //             var w = 100*( sound.currentTime / sound.duration);
+        //             console.log('width: '+w)
+        //             //$($(el).find('.progress-bar')[0]).css("width", w+'%');
+        //             $($(el).find('.sound-progress')[0]).attr('value',w);
+        //         });
+        //     }
+        // }
     </script>
 
 </body>
