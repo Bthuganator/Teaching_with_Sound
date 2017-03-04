@@ -68,16 +68,15 @@
         //         sounds: soundsRef,
         //         about: aboutRef
         //     }            
-        // });
-        var App = Vue.extend({});
-        var router = new VueRouter();
+        // });        
+        
 
-        var Home = Vue.extend({
+     const Home = {
             firebase: {
                 sounds: soundsRef,
                 about: aboutRef
             } ,
-        template: `<nav-bar></nav-bar>    
+        template: `<div><nav-bar></nav-bar>    
     <intro-section></intro-section>
 
     <!-- Page Content -->
@@ -122,23 +121,29 @@
     <contact-section></contact-section>
     <a  name="credits"></a>        
     <credits-section :sounds="sounds"></credits-section>
-    <footer-section></footer-section>`;
-        });
+    <footer-section></footer-section>
+    </div>`
+        };
 
-        var SoundBoard = Vue.extend({
-        template: 'Look at all the people who work here!';
-        });
+        const SoundBoard = {
+            firebase: {
+                sounds: soundsRef
+            },
+            template: `<div id="app">
+                            <nav-bar></nav-bar>      
+                            <sound-section :sounds="sounds"></sound-row>
+                            <footer-section></footer-section>
+                       </div>`
+        };
+        const routes = [
+            { path: '/', component: Home },
+            { path: '/Sound-Board', component: SoundBoard }
+        ]
+        const router = new VueRouter({routes});
 
-        router.map({
-                        '/': {
-                            component: Home
-                        },
-                        '/Sound-Board': {
-                            component: SoundBoard
-                        }
-                    });
-
-router.start(App, '#app');
+        const app = new Vue({
+            router
+        }).$mount('#app')
     </script>
 </body>
 
