@@ -1,5 +1,5 @@
   // Initialize Firebase
-  var config = {
+  const config = {
     apiKey: "AIzaSyAn1vicyN6KBjZyN0iCCTOUeCfjQ9GgYFw",
     authDomain: "teaching-with-sound.firebaseapp.com",
     databaseURL: "https://teaching-with-sound.firebaseio.com",
