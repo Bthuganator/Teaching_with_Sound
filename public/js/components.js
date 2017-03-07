@@ -26,7 +26,7 @@ Vue.component('intro-section',{
     </div>`
         })
         Vue.component('nav-bar', {
-            template: `<!-- Navigation --><nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+            template: `<!-- Navigation --><nav class="navbar navbar-default navbar-top topnav" role="navigation">
         <div class="container topnav">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">

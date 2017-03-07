@@ -129,15 +129,24 @@
             firebase: {
                 sounds: soundsRef
             },
-            template: `<div id="app">
+            template: `<div>
                             <nav-bar></nav-bar>      
                             <sound-section :sounds="sounds"></sound-section>
                             <footer-section></footer-section>
                        </div>`
         };
+        const NotFound = {            
+            template: `<div>
+                            <nav-bar></nav-bar>      
+                                <h1>Page Not Found</h1>
+                                <p>This specified file was not found on this website. Please check the URL for mistakes and try again.</p>
+                            <footer-section></footer-section>
+                       </div>`
+        };
         const routes = [
             { path: '/', component: Home },
-            { path: '/Sound-Board', component: SoundBoard }
+            { path: '/Sound-Board', component: SoundBoard },
+            { path: '*', component: NotFound }
         ]
         const router = new VueRouter({mode: 'history',routes});
 
