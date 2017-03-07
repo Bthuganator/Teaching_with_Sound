@@ -47,10 +47,10 @@ Vue.component('intro-section',{
                         <router-link to="/Sound-Board">Soundboard</router-link>
                     </li>
                     <li>
-                        <a href="#about">About</a>
+                        <router-link to="/#about">About</router-link>
                     </li>
                     <li>
-                        <a href="#contact">Contact</a>
+                        <router-link to="/#contact">Contact</router-link>
                     </li>
                 </ul>
             </div>
