@@ -116,8 +116,8 @@
                     <div class="col-lg-5 col-sm-6">
                         <hr class="section-heading-spacer">
                         <div class="clearfix"></div>
-                        <h2 class="section-heading">{{{a.heading}}}</h2>
-                        <p class="lead">{{{a.body}}}</p>
+                        <h2 class="section-heading" v-html="html">{{a.heading}}</h2>
+                        <p class="lead" v-html="html">{{a.body}}</p>
                     </div>
                     <div class="col-lg-5 col-lg-offset-2 col-sm-6">
                         <img class="img-responsive" :src="a.image_url" alt="">
