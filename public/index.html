@@ -23,7 +23,7 @@
     <!-- Custom Fonts -->
     <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -48,6 +48,11 @@
     <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
     <!-- VueFire -->
     <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+    <!-- Simple Firebase Login -->
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
+
     <!-- jQuery -->
     <script src="../js/jquery-3.1.1.min.js"></script>
     <!-- Firebase Config -->
@@ -69,14 +74,37 @@
         //         about: aboutRef
         //     }            
         // });        
-        
+        // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: '/',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        //   firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        //   firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+        //   firebase.auth.GithubAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '/Sound-Board'
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
 
      const Home = {
             firebase: {
                 sounds: soundsRef,
-                about: aboutRef
+                about: aboutRef                
             } ,
+            
         template: `<div><nav-bar></nav-bar>    
+        <div id="firebaseui-auth-container"></div>
+        <div id="sign-in-status"></div>
+    <div id="sign-in"></div>
+    <div id="account-details"></div>
     <intro-section></intro-section>
 
     <!-- Page Content -->
@@ -145,14 +173,104 @@
         };
         const routes = [
             { path: '/', component: Home },
-            { path: '/Sound-Board', component: SoundBoard },
+            { path: '/Sound-Board', component: SoundBoard,meta:{requiresAuth:true} },
             { path: '*', component: NotFound }
         ]
         const router = new VueRouter({mode: 'history',routes});
-
+        router.beforeEach((to, from, next) => {
+                if (to.matched.some(record => record.meta.requiresAuth)) {
+                    if (!firebase.auth().currentUser) {
+                    next({
+                        path: '/login',
+                        query: {
+                        redirect: to.fullPath,
+                        },
+                    });
+                    } else {
+                    next();
+                    }
+                } else {
+                    next();
+                }
+                });
         const app = new Vue({
-            router
-        }).$mount('#app')
+            el: "#app",
+            router,
+            data:{
+                user:undefined
+            },
+            mounted:function(){
+                firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            user.getToken().then(function(accessToken) {
+              document.getElementById('sign-in-status').textContent = 'Hi '+user.displayName;
+              document.getElementById('sign-in').textContent = 'Sign out';
+            //   document.getElementById('account-details').textContent = JSON.stringify({
+            //     displayName: displayName,
+            //     email: email,
+            //     emailVerified: emailVerified,
+            //     photoURL: photoURL,
+            //     uid: uid,
+            //     accessToken: accessToken,
+            //     providerData: providerData
+            //   }, null, '  ');
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = '';//Signed out';
+            document.getElementById('sign-in').textContent = 'Sign in';
+            //document.getElementById('account-details').textContent = 'null';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+            }
+        });//.$mount('#app')
+
+        //initApp = function() {
+        // firebase.auth().onAuthStateChanged(function(user) {
+        //   if (user) {
+        //     // User is signed in.
+        //     var displayName = user.displayName;
+        //     var email = user.email;
+        //     var emailVerified = user.emailVerified;
+        //     var photoURL = user.photoURL;
+        //     var uid = user.uid;
+        //     var providerData = user.providerData;
+        //     user.getToken().then(function(accessToken) {
+        //       document.getElementById('sign-in-status').textContent = 'Hi '+user.displayName;
+        //       document.getElementById('sign-in').textContent = 'Sign out';
+        //     //   document.getElementById('account-details').textContent = JSON.stringify({
+        //     //     displayName: displayName,
+        //     //     email: email,
+        //     //     emailVerified: emailVerified,
+        //     //     photoURL: photoURL,
+        //     //     uid: uid,
+        //     //     accessToken: accessToken,
+        //     //     providerData: providerData
+        //     //   }, null, '  ');
+        //     });
+        //   } else {
+        //     // User is signed out.
+        //     document.getElementById('sign-in-status').textContent = '';//Signed out';
+        //     document.getElementById('sign-in').textContent = 'Sign in';
+        //     //document.getElementById('account-details').textContent = 'null';
+        //   }
+        // }, function(error) {
+        //   console.log(error);
+        // });
+      //};
+
+    //   window.addEventListener('load', function() {
+    //     initApp()
+    //   });
     </script>
 </body>
 
