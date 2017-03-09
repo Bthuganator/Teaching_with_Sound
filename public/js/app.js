@@ -27,11 +27,8 @@ var db = firebase.database().ref();
                 about: aboutRef                
             } ,
             
-        template: `<div><nav-bar></nav-bar>    
-        <div id="firebaseui-auth-container"></div>
-        <div id="sign-in-status"></div>
-    <div id="sign-in"></div>
-    <div id="account-details"></div>
+        template: `<div>  
+
     <intro-section></intro-section>
 
     <!-- Page Content -->
@@ -75,8 +72,7 @@ var db = firebase.database().ref();
     <a  name="contact"></a>
     <contact-section></contact-section>
     <a  name="credits"></a>        
-    <credits-section :sounds="sounds"></credits-section>
-    <footer-section></footer-section>
+    <credits-section :sounds="sounds"></credits-section>    
     </div>`
         };
 
@@ -84,26 +80,108 @@ var db = firebase.database().ref();
             firebase: {
                 sounds: soundsRef
             },
-            template: `<div>
-                            <nav-bar></nav-bar>      
-                            <sound-section :sounds="sounds"></sound-section>
-                            <footer-section></footer-section>
+            template: `<div>                            
+                            <sound-section :sounds="sounds"></sound-section>                            
                        </div>`
         };
         const NotFound = {            
-            template: `<div>
-                            <nav-bar></nav-bar>      
+            template: `<div>                            
                                 <h1>Page Not Found</h1>
-                                <p>This specified file was not found on this website. Please check the URL for mistakes and try again.</p>
-                            <footer-section></footer-section>
+                                <p>This specified file was not found on this website. Please check the URL for mistakes and try again.</p>                            
                        </div>`
         };
+        const NavBar ={
+            template: `<!-- Navigation --><nav class="navbar navbar-default navbar-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <router-link class="navbar-brand topnav" to="/">Teaching with Sound</router-link>
+                
+                
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <router-link to="/Sound-Board">Soundboard</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/#about">About</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/#contact">Contact</router-link>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span v-if="this.$root.isAuthenticated">Sign Up</span><span v-else>Account</span><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div id="firebaseui-auth-container"></div>
+                            </li>                                
+                            <li role="separator" class="divider"></li>
+                            <li><div id="sign-in-status"></div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>`
+        }
+        const Footer = {
+            template: `<!-- Footer --><footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li>
+                            <router-link to="/">Home</router-link>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <router-link to="/Sound-Board">Soundboard</router-link>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="/#about">About</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="/#contact">Contact</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="/#credits">Credits</a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted small">Teaching with Sound</p>
+                </div>
+            </div>
+        </div>
+    </footer>`
+        }
         const routes = [
-            { path: '/', component: Home },
-            { path: '/Sound-Board', component: SoundBoard, meta:{requiresAuth:true} },
-            { path: '*', component: NotFound }
+            { path: '/', components: {navbar:NavBar,default:Home,footer:Footer} },
+            { path: '/Sound-Board', components: {navbar:NavBar,default:SoundBoard,footer:Footer}, meta:{requiresAuth:true} },
+            { path: '*', components: {navbar:NavBar,default:NotFound,footer:Footer} }
         ]
-        const router = new VueRouter({mode: 'history',routes});
+        const router = new VueRouter({
+                                        mode: 'history',
+                                        routes,
+                                        scrollBehavior (to, from, savedPosition) {
+                                            if (to.hash) {
+                                                return {
+                                                selector: to.hash
+                                                }
+                                            }
+                                        }
+                                    });
         router.beforeEach((to, from, next) => {
                 if (to.matched.some(record => record.meta.requiresAuth)) {
                     if (!firebase.auth().currentUser) {
@@ -126,27 +204,32 @@ var db = firebase.database().ref();
             data:{
                 user:undefined
             },
+            computed:function(){
+                var auth = firebase.auth().currentUser;
+                var isAuthenticated = auth == null ? false : true;
+                return isAuthenticated;
+            },
             mounted:function(){
                 firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            // User is signed in.
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var uid = user.uid;
-            var providerData = user.providerData;
-            user.getToken().then(function(accessToken) {
-              document.getElementById('sign-in-status').textContent = 'Hi '+user.displayName;
-              document.getElementById('sign-in').textContent = 'Sign out';           
-            });
-          } else {
-            // User is signed out.
-            document.getElementById('sign-in-status').textContent = '';
-            document.getElementById('sign-in').textContent = 'Sign in';
-          }
-        }, function(error) {
-          console.log(error);
-        });
+                    if (user) {
+                        // User is signed in.
+                        var displayName = user.displayName;
+                        var email = user.email;
+                        var emailVerified = user.emailVerified;
+                        var photoURL = user.photoURL;
+                        var uid = user.uid;
+                        var providerData = user.providerData;
+                        user.getToken().then(function(accessToken) {
+                        document.getElementById('sign-in-status').textContent = 'Hi '+user.displayName;
+                        //document.getElementById('sign-in').textContent = 'Sign out';           
+                        });
+                    } else {
+                        // User is signed out.
+                        document.getElementById('sign-in-status').textContent = '';
+                        //document.getElementById('sign-in').textContent = 'Sign in';
+                    }
+                }, function(error) {
+                console.log(error);
+                });                
             }
         });//.$mount('#app')
