@@ -168,7 +168,7 @@ var db = firebase.database().ref();
         }
         const routes = [
             { path: '/', components: {navbar:NavBar,default:Home,footer:Footer} },
-            { path: '/Sound-Board', components: {navbar:NavBar,default:SoundBoard,footer:Footer}, meta:{requiresAuth:true} },
+            { path: '/Sound-Board', components: {navbar:NavBar,default:SoundBoard,footer:Footer}},//, meta:{requiresAuth:true} },
             { path: '*', components: {navbar:NavBar,default:NotFound,footer:Footer} }
         ]
         const router = new VueRouter({
