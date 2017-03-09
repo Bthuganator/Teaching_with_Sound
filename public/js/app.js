@@ -100,7 +100,7 @@ var db = firebase.database().ref();
         };
         const routes = [
             { path: '/', component: Home },
-            { path: '/Sound-Board', component: SoundBoard,meta:{requiresAuth:true} },
+            { path: '/Sound-Board', component: SoundBoard, meta:{requiresAuth:true} },
             { path: '*', component: NotFound }
         ]
         const router = new VueRouter({mode: 'history',routes});
