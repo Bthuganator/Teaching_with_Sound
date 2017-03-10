@@ -1,29 +1,29 @@
 var db = firebase.database().ref();
-        var soundsRef = db.child("sounds").orderByChild("attribution");
+        var soundsRef = db.child("sounds");//.orderByChild("attribution");
         var aboutRef = db.child("about").orderByChild("sort");
          
         // FirebaseUI config
-      var uiConfig = {
-        signInSuccessUrl: '/',
-        signInOptions: [          
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        //   firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        //   firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        //   firebase.auth.GithubAuthProvider.PROVIDER_ID,
-          firebase.auth.EmailAuthProvider.PROVIDER_ID
-        ],
-        // Terms of service url.
-        tosUrl: '/Sound-Board'
-      };
+    //   var uiConfig = {
+    //     signInSuccessUrl: '/',
+    //     signInOptions: [          
+    //       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    //     //   firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    //     //   firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+    //     //   firebase.auth.GithubAuthProvider.PROVIDER_ID,
+    //       firebase.auth.EmailAuthProvider.PROVIDER_ID
+    //     ],
+    //     // Terms of service url.
+    //     tosUrl: '/Sound-Board'
+    //   };
 
-      // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui-auth-container', uiConfig);
+    //   // Initialize the FirebaseUI Widget using Firebase.
+    //   var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    //   // The start method will wait until the DOM is loaded.
+    //   ui.start('#firebaseui-auth-container', uiConfig);
 
      const Home = {
             firebase: {
-                sounds: soundsRef,
+                sounds: soundsRef.orderByChild("attribution"),
                 about: aboutRef                
             } ,
             
@@ -78,7 +78,7 @@ var db = firebase.database().ref();
 
         const SoundBoard = {
             firebase: {
-                sounds: soundsRef
+                sounds: soundsRef.orderByChild("display_name")
             },
             template: `<div>                            
                             <sound-section :sounds="sounds"></sound-section>                            
@@ -117,7 +117,7 @@ var db = firebase.database().ref();
                     <li>
                         <router-link to="/#contact">Contact</router-link>
                     </li>
-                    <li class="dropdown">
+                    <!--<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span v-if="this.$root.isAuthenticated">Sign Up</span><span v-else>Account</span><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>
@@ -126,7 +126,7 @@ var db = firebase.database().ref();
                             <li role="separator" class="divider"></li>
                             <li><div id="sign-in-status"></div></li>
                         </ul>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -168,7 +168,7 @@ var db = firebase.database().ref();
         }
         const routes = [
             { path: '/', components: {navbar:NavBar,default:Home,footer:Footer} },
-            { path: '/Sound-Board', components: {navbar:NavBar,default:SoundBoard,footer:Footer}, meta:{requiresAuth:true} },
+            { path: '/Sound-Board', components: {navbar:NavBar,default:SoundBoard,footer:Footer}},//, meta:{requiresAuth:true} },
             { path: '*', components: {navbar:NavBar,default:NotFound,footer:Footer} }
         ]
         const router = new VueRouter({
@@ -182,22 +182,22 @@ var db = firebase.database().ref();
                                             }
                                         }
                                     });
-        router.beforeEach((to, from, next) => {
-                if (to.matched.some(record => record.meta.requiresAuth)) {
-                    if (!firebase.auth().currentUser) {
-                    next({
-                        path: '/login',
-                        query: {
-                        redirect: to.fullPath,
-                        },
-                    });
-                    } else {
-                    next();
-                    }
-                } else {
-                    next();
-                }
-                });
+        // router.beforeEach((to, from, next) => {
+        //         if (to.matched.some(record => record.meta.requiresAuth)) {
+        //             if (!firebase.auth().currentUser) {
+        //             next({
+        //                 path: '/login',
+        //                 query: {
+        //                 redirect: to.fullPath,
+        //                 },
+        //             });
+        //             } else {
+        //             next();
+        //             }
+        //         } else {
+        //             next();
+        //         }
+        //         });
         const app = new Vue({
             el: "#app",
             router,
@@ -210,26 +210,26 @@ var db = firebase.database().ref();
                 return isAuthenticated;
             },
             mounted:function(){
-                firebase.auth().onAuthStateChanged(function(user) {
-                    if (user) {
-                        // User is signed in.
-                        var displayName = user.displayName;
-                        var email = user.email;
-                        var emailVerified = user.emailVerified;
-                        var photoURL = user.photoURL;
-                        var uid = user.uid;
-                        var providerData = user.providerData;
-                        user.getToken().then(function(accessToken) {
-                        document.getElementById('sign-in-status').textContent = 'Hi '+user.displayName;
-                        //document.getElementById('sign-in').textContent = 'Sign out';           
-                        });
-                    } else {
-                        // User is signed out.
-                        document.getElementById('sign-in-status').textContent = '';
-                        //document.getElementById('sign-in').textContent = 'Sign in';
-                    }
-                }, function(error) {
-                console.log(error);
-                });                
+                // firebase.auth().onAuthStateChanged(function(user) {
+                //     if (user) {
+                //         // User is signed in.
+                //         var displayName = user.displayName;
+                //         var email = user.email;
+                //         var emailVerified = user.emailVerified;
+                //         var photoURL = user.photoURL;
+                //         var uid = user.uid;
+                //         var providerData = user.providerData;
+                //         user.getToken().then(function(accessToken) {
+                //         document.getElementById('sign-in-status').textContent = 'Hi '+user.displayName;
+                //         //document.getElementById('sign-in').textContent = 'Sign out';           
+                //         });
+                //     } else {
+                //         // User is signed out.
+                //         document.getElementById('sign-in-status').textContent = '';
+                //         //document.getElementById('sign-in').textContent = 'Sign in';
+                //     }
+                // }, function(error) {
+                // console.log(error);
+                // });                
             }
         });//.$mount('#app')
