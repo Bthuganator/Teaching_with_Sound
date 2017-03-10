@@ -4,7 +4,7 @@
   },
   "hosting": {
     "public": "public",
-    "cleanUrls": true,    
+	"cleanUrls": true,
     "rewrites": [
       {
         "source": "**",

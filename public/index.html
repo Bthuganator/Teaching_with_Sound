@@ -23,7 +23,8 @@
     <!-- Custom Fonts -->
     <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
+    <!-- FirebaseUI -->
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -37,7 +38,9 @@
 
 <body>    
     <div id="app">
+    <router-view name="navbar"></router-view>
     <router-view></router-view>
+    <router-view name="footer"></router-view>
 </div><!--end app-->        
 
     <!-- Vue -->
@@ -48,6 +51,11 @@
     <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
     <!-- VueFire -->
     <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+    <!-- Simple Firebase Login -->
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
+
     <!-- jQuery -->
     <script src="../js/jquery-3.1.1.min.js"></script>
     <!-- Firebase Config -->
@@ -55,105 +63,10 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
     <!-- Custom Vue Components -->
-    <script src="../js/components.js"></script>			
+    <script src="../js/components.js"></script>	
+    <!-- Main -->
+    <script src="../js/app.js"></script>
 
-    <script>   
-        
-        var db = firebase.database().ref();
-        var soundsRef = db.child("sounds").orderByChild("attribution");
-        var aboutRef = db.child("about").orderByChild("sort");
-        // var app = new Vue({
-        //     el: '#app',                        
-        //     firebase: {
-        //         sounds: soundsRef,
-        //         about: aboutRef
-        //     }            
-        // });        
-        
-
-     const Home = {
-            firebase: {
-                sounds: soundsRef,
-                about: aboutRef
-            } ,
-        template: `<div><nav-bar></nav-bar>    
-    <intro-section></intro-section>
-
-    <!-- Page Content -->
-	<a  name="about"></a>
-	<template v-for="(a, index) in about">    	
-        <div class="content-section-a" v-if="index % 2">
-             <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-sm-6">
-                        <hr class="section-heading-spacer">
-                        <div class="clearfix"></div>
-                        <h2 class="section-heading">{{a.heading}}</h2>
-                        <p class="lead">{{a.body}}</p>
-                    </div>
-                    <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                        <img class="img-responsive" :src="a.image_url" alt="">
-                    </div>
-                </div>
-    
-            </div>
-        </div>
-        
-        <div class="content-section-b" v-else>
-             <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                        <hr class="section-heading-spacer">
-                        <div class="clearfix"></div>
-                        <h2 class="section-heading">{{a.heading}}</h2>
-                        <p class="lead">{{a.body}}</p>
-                    </div>
-                    <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                        <img class="img-responsive" :src="a.image_url" alt="">
-                    </div>
-                </div>
-    
-            </div>
-        </div>        
-    </template>	
-
-    <a  name="contact"></a>
-    <contact-section></contact-section>
-    <a  name="credits"></a>        
-    <credits-section :sounds="sounds"></credits-section>
-    <footer-section></footer-section>
-    </div>`
-        };
-
-        const SoundBoard = {
-            firebase: {
-                sounds: soundsRef
-            },
-            template: `<div>
-                            <nav-bar></nav-bar>      
-                            <sound-section :sounds="sounds"></sound-section>
-                            <footer-section></footer-section>
-                       </div>`
-        };
-        const NotFound = {            
-            template: `<div>
-                            <nav-bar></nav-bar>      
-                                <h1>Page Not Found</h1>
-                                <p>This specified file was not found on this website. Please check the URL for mistakes and try again.</p>
-                            <footer-section></footer-section>
-                       </div>`
-        };
-        const routes = [
-            { path: '/', component: Home },
-            { path: '/Sound-Board', component: SoundBoard },
-            { path: '*', component: NotFound }
-        ]
-        const router = new VueRouter({mode: 'history',routes});
-
-        const app = new Vue({
-            router
-        }).$mount('#app')
-    </script>
 </body>
 
 </html>

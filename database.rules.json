@@ -1,6 +1,12 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "auth != null"
+    "about":{
+      ".read": "true",
+      ".write": "false"
+    },
+    "sounds":{
+      ".read": "true",//auth != null",
+      ".write": "false"//"auth != null"
+    }
   }
 }

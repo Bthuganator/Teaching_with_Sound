@@ -201,3 +201,9 @@ p.copyright {
 .navbar-top{
     margin-bottom: 0px;
 }
+#sign-in-status{
+    margin-left: 5px;
+}
+.navbar-nav ul.dropdown-menu{
+    min-width: 300px;
+}
