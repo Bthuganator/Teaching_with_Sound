@@ -2,7 +2,7 @@ var db = firebase.database().ref();
         var soundsRef = db.child("sounds");//.orderByChild("attribution");
         var aboutRef = db.child("about").orderByChild("sort");
          
-        // FirebaseUI config
+    // FirebaseUI config
     //   var uiConfig = {
     //     signInSuccessUrl: '/',
     //     signInOptions: [          
