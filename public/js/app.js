@@ -32,7 +32,7 @@ var db = firebase.database().ref();
     <intro-section></intro-section>
 
     <!-- Page Content -->
-	<a  name="about"></a>
+    <span id="about"></span>
 	<template v-for="(a, index) in about">    	
         <div class="content-section-a" v-if="index % 2">
              <div class="container">
@@ -69,9 +69,9 @@ var db = firebase.database().ref();
         </div>        
     </template>	
 
-    <a  name="contact"></a>
+    <span id="contact"></span>
     <contact-section></contact-section>
-    <a  name="credits"></a>        
+    <span id="credits"></span>        
     <credits-section :sounds="sounds"></credits-section>    
     </div>`
         };
@@ -114,7 +114,7 @@ var db = firebase.database().ref();
                     <li>
                         <router-link to="/#about">About</router-link>
                     </li>
-                    <li>
+                    <li>                        
                         <router-link to="/#contact">Contact</router-link>
                     </li>
                     <!--<li class="dropdown">
@@ -148,16 +148,16 @@ var db = firebase.database().ref();
                             <router-link to="/Sound-Board">Soundboard</router-link>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="/#about">About</a>
+                        <li>                            
+                            <router-link to="/#about">About</router-link>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="/#contact">Contact</a>
+                            <router-link to="/#contact">Contact</router-link>
                         </li>
                         <li class="footer-menu-divider">&sdot;</li>
                         <li>
-                            <a href="/#credits">Credits</a>
+                            <router-link to="/#credits">Credits</router-link>
                         </li>
                     </ul>
                     <p class="copyright text-muted small">Teaching with Sound</p>
@@ -173,13 +173,18 @@ var db = firebase.database().ref();
         ]
         const router = new VueRouter({
                                         mode: 'history',
+                                        abstract: true,
                                         routes,
                                         scrollBehavior (to, from, savedPosition) {
+                                            window.scrollTo(0,0);
                                             if (to.hash) {
                                                 return {
                                                 selector: to.hash
                                                 }
                                             }
+                                             else {
+                                                    return { x: 0, y: 0 }
+                                                }
                                         }
                                     });
         // router.beforeEach((to, from, next) => {
