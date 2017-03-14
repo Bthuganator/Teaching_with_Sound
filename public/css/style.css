@@ -207,3 +207,6 @@ p.copyright {
 .navbar-nav ul.dropdown-menu{
     min-width: 300px;
 }
+.paypalForm table{
+    margin-bottom: 20px;
+}
