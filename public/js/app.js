@@ -51,7 +51,7 @@ var db = firebase.database().ref();
 							<tr>
 								<td>
 									<input type="hidden" name="on0" value="Teaching with Sound Support">Teaching with Sound Support</td></tr><tr><td>
-										<select name="os0">
+										<select class="form-control" name="os0">
 											<option value="Helpful site">Helpful site $1.00 USD</option>
 											<option value="I want more">I want more $3.00 USD</option>
 											<option value="Make it great">Make it great $5.00 USD</option>
