@@ -42,29 +42,24 @@ var db = firebase.database().ref();
                         <div class="clearfix"></div>
                         <h2 class="section-heading" v-html="a.heading"></h2>
                         <p class="lead" v-html="a.body"></p>
-                        <div v-if="index === 3">
-						<form class="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                            
-							<input type="hidden" name="cmd" value="_s-xclick">
-							<input type="hidden" name="hosted_button_id" value="8SFGBCDD59YQN">
-							<table>
-							<tr>
-								<td>
-									<input type="hidden" name="on0" value="Teaching with Sound Support"></td></tr><tr><td>
-										<select class="form-control" name="os0">
-											<option value="Helpful site">Helpful site $1.00 USD</option>
-											<option value="I want more">I want more $3.00 USD</option>
-											<option value="Make it great">Make it great $5.00 USD</option>
-											</select> 
-								</td>
-							</tr>
-							</table>
-							<input type="hidden" name="currency_code" value="USD">
-                            <p>                       
-                                <button class="btn btn-default btn-g" name="submit" alt="PayPal - The safer, easier way to pay online!">Support Now</button>
-                            </p>
-                            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                            </form>
+                        <div v-if="index === 3">						
+                            <form class="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <input type="hidden" name="cmd" value="_s-xclick">
+                                <table>
+                                <tr><td><input type="hidden" name="on0" value="Teaching With Sound Support"></td></tr><tr><td><select class="form-control" name="os0">
+                                    <option value="Helpful site">Helpful site $1.00 USD</option>
+                                    <option value="I want more">I want more $3.00 USD</option>
+                                    <option value="Make it great">Make it great $5.00 USD</option>
+                                </select> </td></tr>
+                                </table>
+                                <input type="hidden" name="currency_code" value="USD">
+                                <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+                                ">
+                                <p>
+                                <button class="btn btn-default btn-g"  border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">Support Now</button>
+                                </p>
+                                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                                </form>
                         </div>
                     </div>
                     <div class="col-lg-5 col-lg-offset-2 col-sm-6">
