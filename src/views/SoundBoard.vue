@@ -1,19 +1,19 @@
 <template>
-    <div class="container">                            
-        <lesson-section :sounds='sounds'></lesson-section>                            
+    <div>                            
+        <sound-section :sounds='sounds'></sound-section>                            
     </div>
 </template>
 
 <script>
-import LessonSection from '../lesson-section'
-import db from '../../js/firebase-db'
+import SoundSection from '../components/sound-section'
+import db from '../js/firebase-db'
 
 var soundsRef = db.ref().child('sounds').orderByChild('display_name')
 
 export default {
-  name: 'LessonBoard',
+  name: 'SoundBoard',
   components: {
-    LessonSection
+    SoundSection
   },
   firebase: {
     sounds: soundsRef

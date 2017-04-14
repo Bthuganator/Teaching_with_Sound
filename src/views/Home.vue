@@ -84,10 +84,10 @@
 </template>
 
 <script>
-import IntroSection from '../intro-section'
-import ContactSection from '../contact-section'
-import CreditsSection from '../credits-section'
-import db from '../../js/firebase-db'
+import IntroSection from '../components/intro-section'
+import ContactSection from '../components/contact-section'
+import CreditsSection from '../components/credits-section'
+import db from '../js/firebase-db'
 
 var soundsRef = db.ref().child('sounds')
 var aboutRef = db.ref().child('about').orderByChild('sort')
