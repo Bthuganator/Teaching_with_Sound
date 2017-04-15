@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "teaching-with-sound",
+    "staging": "teaching-with-sound"
+  }
+}
