@@ -9,6 +9,7 @@ selenium-debug.log
 
 node_modules
 public/js/fbconfig.js
+node_modules
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
