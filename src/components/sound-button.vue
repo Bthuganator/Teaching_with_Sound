@@ -1,8 +1,8 @@
 <template>
     <button class='btn btn-primary play-sound vue-grid-item-content' v-on:click='playSound(this)'>
-        <span class='glyphicon glyphicon-play'></span> <span class='display-name'>{{sound.display_name}}</span>
+        <span class='glyphicon glyphicon-play'></span> <span class='display-name'>{{snd.display_name}}</span>
         <progress class='sound-progress' value='0' max='100'></progress>
-        <audio class='hidden' :src='sound.sound_url' :type='sound.audio_type' autostart='false' codecs='mp3'></audio>
+        <audio class='hidden' :src='snd.sound_url' :type='snd.audio_type' autostart='false' codecs='mp3'></audio>
     </button>
 </template>
 
@@ -10,17 +10,24 @@
 import $ from 'jquery'
 export default {
   name: 'sound-button',
-  props: { 'sound': Object,
-    'currentSound': HTMLAudioElement
+  props: { 'props': Object// ,
+    // 'currentSound': HTMLAudioElement
   },
   data: function () {
-    return { duration: 0 }
+    return { duration: 0,
+      snd: this.props }
+  },
+  created: function () {
+    console.log('test')
+    this.$emit('created', this)
   },
   methods: {
     playSound: function (e) {
+      this.$emit('created', this)
       var newSound
       var el = this.$el
       $(el).parents('.sound-well').siblings().find('button .glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+      $(el).parents('.sound-well').siblings().find('button').removeClass('btn-success').addClass('btn-primary')
       if (this.currentSound !== null) {
         this.currentSound.pause()
         this.currentSound.currentTime = 0
@@ -31,6 +38,7 @@ export default {
         this.currentSound.currentTime = 0
         newSound = this.currentSound
         $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+        $(el).removeClass('btn-success').addClass('btn-primary')
       } else {
         newSound = $(el).children('audio')[0]
         newSound.play()
@@ -39,8 +47,10 @@ export default {
           console.log('Audio duration: ' + this.duration)
         })
         $(el).children('.glyphicon').removeClass('glyphicon-play').addClass('glyphicon-stop')
+        $(el).removeClass('btn-primary').addClass('btn-success')
         $(newSound).on('ended', function () {
           $(el).children('.glyphicon').removeClass('glyphicon-stop').addClass('glyphicon-play')
+          $(el).removeClass('btn-success').addClass('btn-primary')
           $($(el).find('.sound-progress')[0]).attr('value', 0)
         })
         $(newSound).on('timeupdate', function () {
@@ -50,7 +60,7 @@ export default {
           }
         })
       }
-      this.$emit('update-sound', newSound)
+      this.$emit('click', newSound)
     }
   }
 }
