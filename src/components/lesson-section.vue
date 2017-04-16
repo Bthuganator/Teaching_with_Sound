@@ -33,33 +33,33 @@ import Vue from 'vue'
 
 var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
-var testLayout = [
-  {
-    'x': 0,
-    'y': 0,
-    'w': 2,
-    'h': 2,
-    'i': '1',
-    type: 'sound-button',
-    click: 'updateCurrentSound',
-    created: 'getData',
-    data: {
-      _id:
-      '58b064aad3f90c4f00000299',
-      attribution:
-      '',
-      audio_type:
-      'audio/mpeg',
-      display_name:
-      'Wrong Answer',
-      play_count:
-      0,
-      sound_origin_url:
-      '',
-      sound_url:
-      'https://teachersoundboard-bb06.restdb.io/media/58b0646ad3f90c4f00000296'
-    }
-  },
+// var testLayout = [
+//   {
+//     'x': 0,
+//     'y': 0,
+//     'w': 2,
+//     'h': 2,
+//     'i': '1',
+//     type: 'sound-button',
+//     click: 'updateCurrentSound',
+//     created: 'getData',
+//     data: {
+//       _id:
+//       '58b064aad3f90c4f00000299',
+//       attribution:
+//       '',
+//       audio_type:
+//       'audio/mpeg',
+//       display_name:
+//       'Wrong Answer',
+//       play_count:
+//       0,
+//       sound_origin_url:
+//       '',
+//       sound_url:
+//       'https://teachersoundboard-bb06.restdb.io/media/58b0646ad3f90c4f00000296'
+//     }
+//   },
   // {
   //   'x': 2,
   //   'y': 0,
@@ -170,31 +170,31 @@ var testLayout = [
   //     'https://firebasestorage.googleapis.com/v0/b/teaching-with-sound.appspot.com/o/Sounds%2F167385__ultradust__wood-block-tick-tock-cartoon-clock%20(1).mp3?alt=media&token=7f034c31-053a-4ff4-8ae8-b013ac660641'
   //   }
   // } // ,
-  {
-    'x': 0,
-    'y': 0,
-    'w': 2,
-    'h': 2,
-    'i': '7',
-    type: 'google-map',
-    click: 'undefined',
-    created: 'undefined',
-    'data': {
-      center: {lat: 10.0, lng: 10.0},
-      zoom: 7,
-      map_type_id: 'terrain',
-      style: 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;',
-      markers: [{ id: 1,
-        position: {lat: 10.0, lng: 10.0}
-      }, { id: 2,
-        position: {lat: 11.0, lng: 11.0}
-      }]
-    }
-  }
-]
+//   {
+//     'x': 0,
+//     'y': 0,
+//     'w': 2,
+//     'h': 2,
+//     'i': '7',
+//     type: 'google-map',
+//     click: 'undefined',
+//     created: 'undefined',
+//     'data': {
+//       center: {lat: 10.0, lng: 10.0},
+//       zoom: 7,
+//       map_type_id: 'terrain',
+//       style: 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;',
+//       markers: [{ id: 1,
+//         position: {lat: 10.0, lng: 10.0}
+//       }, { id: 2,
+//         position: {lat: 11.0, lng: 11.0}
+//       }]
+//     }
+//   }
+// ]
 export default {
   name: 'lesson-section',
-  props: ['sounds'],
+  props: ['boxes'],
   components: {
     SoundButton,
     GridLayout,
@@ -204,7 +204,7 @@ export default {
   data: function () {
     return {
       currentSound: null,
-      layout: testLayout
+      layout: this.boxes
     }
   },
   methods: {
@@ -216,7 +216,6 @@ export default {
       Vue.$gmapDefaultResizeBus.$emit('resize')
     },
     getData: function (child) {
-      console.log('test')
       child.currentSound = this.currentSound
     }
   }

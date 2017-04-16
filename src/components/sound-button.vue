@@ -18,7 +18,6 @@ export default {
       snd: this.props }
   },
   created: function () {
-    console.log('test')
     this.$emit('created', this)
   },
   methods: {
