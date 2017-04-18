@@ -1,5 +1,5 @@
 <template>
-<a-player autoplay :music="data"></a-player>
+<a-player :music="data"></a-player>
 </template>
 
 <script>
