@@ -184,11 +184,11 @@ var GridItem = VueGridLayout.GridItem
 //       zoom: 7,
 //       map_type_id: 'terrain',
 //       style: 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;',
-//       markers: [{ id: 1,
-//         position: {lat: 10.0, lng: 10.0}
-//       }, { id: 2,
-//         position: {lat: 11.0, lng: 11.0}
-//       }]
+      // markers: [{ id: 1,
+      //   position: {lat: 10.0, lng: 10.0}
+      // }, { id: 2,
+      //   position: {lat: 11.0, lng: 11.0}
+      // }]
 //     }
 //   }
 // ]
