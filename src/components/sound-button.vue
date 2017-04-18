@@ -1,6 +1,7 @@
 <template>
     <button class='btn btn-primary play-sound vue-grid-item-content' v-on:click='playSound(this)'>
         <i class="fa fa-3x" v-bind:class="snd.icon"></i>
+        <i class="fa fa-3x" v-bind:class="snd.icon2"></i>
         <!--<span class='glyphicon glyphicon-play'></span> <span class='display-name'>{{snd.display_name}}</span>-->
         <!--<progress class='sound-progress' value='0' max='100'></progress>-->
         <audio class='hidden' :src='snd.sound_url' :type='snd.audio_type' autostart='false' codecs='mp3'></audio>
