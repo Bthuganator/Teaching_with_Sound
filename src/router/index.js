@@ -44,12 +44,14 @@ export default new Router({
       path: '/Sound-Board',
       name: 'SoundBoard',
       components: { navbar: NavBar, default: SoundBoard, footer: Footer },
-      props: { db } }, //, meta:{requiresAuth:true} },
+      props: { db }
+    }, //, meta:{requiresAuth:true} },
     {
       path: '/Lesson-Board',
       name: 'LessonBoard',
       components: { navbar: NavBar, default: LessonBoard, footer: Footer },
-      props: { db } },
+      props: { db }
+    },
     {
       path: '*',
       components: { navbar: NavBar, default: NotFound, footer: Footer }

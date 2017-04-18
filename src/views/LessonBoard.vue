@@ -1,6 +1,6 @@
 <template>
     <div class="container">                            
-        <lesson-section :sounds='sounds'></lesson-section>                            
+        <lesson-section :boxes='boxes'></lesson-section>                            
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 import LessonSection from '../components/lesson-section'
 import db from '../js/firebase-db'
 
-var soundsRef = db.ref().child('sounds').orderByChild('display_name')
+var boxesRef = db.ref().child('soundstest').orderByChild('i')
 
 export default {
   name: 'LessonBoard',
@@ -16,7 +16,7 @@ export default {
     LessonSection
   },
   firebase: {
-    sounds: soundsRef
+    boxes: boxesRef
   }
 }
 </script>
