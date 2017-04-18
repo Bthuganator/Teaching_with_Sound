@@ -7,6 +7,10 @@
     "sounds":{
       ".read": "true",//auth != null",
       ".write": "false"//"auth != null"
+    },
+    "soundstest":{
+      ".read": "true",//auth != null",
+      ".write": "false"//"auth != null"
     }
   }
 }
