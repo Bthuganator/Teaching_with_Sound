@@ -24,16 +24,13 @@
                     <li>                        
                         <router-link to="/#contact">Contact</router-link>
                     </li>
-                    <!--<li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span v-if="this.$root.isAuthenticated">Sign Up</span><span v-else>Account</span><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div id="firebaseui-auth-container"></div>
-                            </li>                                
-                            <li role="separator" class="divider"></li>
-                            <li><div id="sign-in-status"></div></li>
-                        </ul>
-                    </li>-->
+                    <li>                        
+                        <a href="#" v-if="theUser" @click="signOut">Log Off</a>
+                        <router-link v-else to="/Login">Login</router-link>                        
+                    </li>                    
+                    <li v-if="theUser">
+                        <a href="#">Hello, {{theUser.displayName}}</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -43,8 +40,31 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  computed: {
+    ...mapGetters({
+      user: 'user',
+      fb: 'fb'
+    }),
+    theUser: function () {
+      return this.user
+    }
+  },
+  methods: {
+    signOut (e) {
+      e.preventDefault()
+      this.fb.auth().signOut().then(this.onSignOut, this.onError)
+    },
+    onSignOut () {
+      this.$router.push('Login')
+    },
+    onError () {
+      console.error('onError')
+    }
+  }
 }
 </script>
 

@@ -10,7 +10,11 @@ import { fb, fbUI, db } from './js/firebaseConfig'
 Vue.use(VueFire)
 Vue.config.productionTip = false
 
-fb.auth().onAuthStateChanged(user => store.commit('SET_USER', user))
+fb.auth().onAuthStateChanged(
+  function (user) {
+    store.commit('SET_USER', user)
+  })
+
 store.commit('SET_FB', fb)
 store.commit('SET_DB', db)
 store.commit('SET_FB_UI', fbUI)

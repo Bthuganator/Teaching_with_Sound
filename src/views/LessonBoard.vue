@@ -19,6 +19,7 @@ export default {
     })
   },
   firebase: function () {
+    console.log('test')
     return {
       boxes: this.db.ref().child('soundstest').orderByChild('i')
     }

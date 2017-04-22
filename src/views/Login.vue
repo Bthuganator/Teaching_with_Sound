@@ -9,7 +9,7 @@ import firebase from 'firebase'
 import { mapGetters } from 'vuex'
 
 const uiConfig = {
-  signInSuccessUrl: 'https://teachingwithsound.com/Lesson-Board',
+  signInSuccessUrl: '/Lesson-Board',
   signInOptions: [
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -30,13 +30,13 @@ export default {
     })
   },
   methods: {
-    startUI: function () {
-      console.log('test')
-      this.fbUI.start('#firebaseui-auth-container', uiConfig)
-    }
+    // startUI: function () {
+    //   console.log('test')
+    //   this.fbUI.start('#firebaseui-auth-container', uiConfig)
+    // }
   },
   mounted () {
-    this.startUI()
+    this.fbUI.start('#firebaseui-auth-container', uiConfig)
   },
   destroyed () {
     this.fbUI.reset()
