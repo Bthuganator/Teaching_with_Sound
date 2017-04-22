@@ -87,10 +87,7 @@
 import IntroSection from '../components/intro-section'
 import ContactSection from '../components/contact-section'
 import CreditsSection from '../components/credits-section'
-import db from '../js/firebase-db'
-
-var soundsRef = db.ref().child('sounds')
-var aboutRef = db.ref().child('about').orderByChild('sort')
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
@@ -99,9 +96,16 @@ export default {
     ContactSection,
     CreditsSection
   },
-  firebase: {
-    sounds: soundsRef,
-    about: aboutRef
+  computed: {
+    ...mapGetters({
+      db: 'db'
+    })
+  },
+  firebase: function () {
+    return {
+      sounds: this.db.ref().child('sounds'),
+      about: this.db.ref().child('about').orderByChild('sort')
+    }
   }
 }
 </script>

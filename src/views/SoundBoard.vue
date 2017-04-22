@@ -6,17 +6,22 @@
 
 <script>
 import SoundSection from '../components/sound-section'
-import db from '../js/firebase-db'
-
-var soundsRef = db.ref().child('sounds').orderByChild('display_name')
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SoundBoard',
   components: {
     SoundSection
   },
-  firebase: {
-    sounds: soundsRef
+  computed: {
+    ...mapGetters({
+      db: 'db'
+    })
+  },
+  firebase: function () {
+    return {
+      sounds: this.db.ref().child('sounds').orderByChild('display_name')
+    }
   }
 }
 </script>
