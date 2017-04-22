@@ -22,11 +22,9 @@ export default {
   },
   methods: {
     updateCurrentSound: function (sound) {
-      console.log('test2')
       this.currentSound = sound
     },
     getData: function (child) {
-      console.log('test')
       child.currentSound = this.currentSound
     }
   }

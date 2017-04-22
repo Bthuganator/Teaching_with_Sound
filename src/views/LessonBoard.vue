@@ -6,17 +6,22 @@
 
 <script>
 import LessonSection from '../components/lesson-section'
-import db from '../js/firebase-db'
-
-var boxesRef = db.ref().child('soundstest').orderByChild('i')
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LessonBoard',
   components: {
     LessonSection
   },
-  firebase: {
-    boxes: boxesRef
+  computed: {
+    ...mapGetters({
+      db: 'db'
+    })
+  },
+  firebase: function () {
+    return {
+      boxes: this.db.ref().child('soundstest').orderByChild('i')
+    }
   }
 }
 </script>
