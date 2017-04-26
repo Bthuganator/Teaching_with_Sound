@@ -24,7 +24,7 @@
                     <li>                        
                         <router-link to="/#contact">Contact</router-link>
                     </li>
-                    <li>                        
+                    <li v-if="theUser">                        
                         <a href="#" v-if="theUser" @click="signOut">Log Off</a>
                         <router-link v-else to="/Login">Login</router-link>                        
                     </li>                    
