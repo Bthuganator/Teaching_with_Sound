@@ -1,18 +1,11 @@
 <template>
-  <div class="vue-grid-item-content">
-    <div v-if="editMode" class="settings">
-      <i data-toggle="modal" data-target="#editModal" class="fa fa-cog"></i>      
-      <i class="fa fa-clone"></i>
-      <i @click="setPk" data-toggle="modal" data-target="#removeModal" class="fa fa-trash"></i>
-    </div>
+  
     <button class='btn btn-primary play-sound vue-grid-item-content' v-on:click='playSound(this)'>      
         <i class="fa fa-3x" v-bind:class="snd.icon"></i>
         <i class="fa fa-3x" v-bind:class="snd.icon2"></i>
         <audio class='hidden' :src='snd.sound_url' :type='snd.audio_type' autostart='false' codecs='mp3'></audio>        
     </button>
-    
-</div>
-    </div>
+
 </template>
 
 <script>

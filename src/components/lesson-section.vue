@@ -21,8 +21,17 @@
                    :h='item.h'
                    :i='item.i'
                    :key='item.i'
-                   @resized='resizedEvent'>            
-            <component :is="item.type" :pk="item['.key']" :editMode="editMode" v-on:click="item.click" v-on:created="getData" v-on:remove="removeRecord" v-on:save="saveRecord"  :props="item.data"></component>                        
+                   @resized='resizedEvent'>   
+
+      
+          <div class="vue-grid-item-content">
+                      <div v-if="editMode" class="settings">
+            <i data-toggle="modal" data-target="#editModal" class="fa fa-cog"></i>      
+            <!--<i class="fa fa-clone"></i>-->
+            <i @click="setPk" data-toggle="modal" data-target="#removeModal" class="fa fa-trash"></i>
+          </div>   
+            <component :is="item.type" :pk="item['.key']" :editMode="editMode" v-on:click="item.click" v-on:created="getData" v-on:remove="removeRecord" v-on:save="saveRecord"  :props="item.data"></component>
+          </div>                        
         </grid-item>
     </grid-layout>
 
@@ -159,5 +168,26 @@ export default {
   left: 0;
   width: 100% !important;
   height: 100% !important;
+}
+
+.settings{
+    position: absolute;
+    top: -2.9vw;
+    top: 0vw;
+    left: 0vw;
+    display: none;   
+    z-index: 10;
+    background: rgba(255, 255, 255, .9);
+    display: block;
+    border-radius: 20px;
+}
+.settings i{
+  font-size: 1.4vw;
+  padding: .5vw;
+  cursor: pointer;
+  z-index: 1001;
+}
+.vue-grid-item:hover .settings {
+
 }
 </style>
