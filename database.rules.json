@@ -11,6 +11,10 @@
     "soundstest":{
       ".read": "true",//auth != null",
       ".write": "auth != null"
+    },
+    "item_options":{
+      ".read": "true",
+      ".write": "false"
     }
   }
 }

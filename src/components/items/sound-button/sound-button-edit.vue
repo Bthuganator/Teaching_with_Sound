@@ -1,27 +1,35 @@
 <template>
-  
-    <button class='btn btn-primary play-sound vue-grid-item-content' v-on:click='playSound(this)'>      
-        <i class="fa fa-3x" v-bind:class="snd.icon"></i>
-        <i class="fa fa-3x" v-bind:class="snd.icon2"></i>
-        <audio class='hidden' :src='snd.sound_url' :type='snd.audio_type' autostart='false' codecs='mp3'></audio>        
-    </button>
-
+  <div class="">
+    <select>
+      <option v-for="sound in sounds" :value="sound['.key']">{{sound.display_name}}</option>
+    </select>
+    <select>
+      <option v-for="color in colors" :value="color['.key']">
+        {{color.display_name}}
+        </option>
+    </select>
+    <ul>
+      <li v-for="icon in icons" :value="icon['.key']">
+        <i class="fa" v-bind:class="icon.icon"></i>
+        <i class="fa" v-bind:class="icon.icon2"></i>
+        {{icon.display_name}}
+        </li>
+    </ul>    
+  </div>
 </template>
 
 <script>
-import $ from 'jquery'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'sound-button',
   props: {
-    'props': Object,
-    'editMode': Boolean,
-    'pk': String
+    'props': Object
   },
   computed: {
     ...mapGetters({
-      currentSound: 'currentSound'
+      currentSound: 'currentSound',
+      db: 'db'
     })
   },
   data: function () {
@@ -30,42 +38,15 @@ export default {
       snd: this.props
     }
   },
-  // created: function () {
-  //   this.$emit('created', this)
-  // },
+  firebase: function () {
+    return {
+      sounds: this.db.ref().child('sounds').orderByChild('display_name'),
+      colors: this.db.ref().child('item_options/sound_button/color').orderByChild('display_name'),
+      icons: this.db.ref().child('item_options/sound_button/icon').orderByChild('display_name')
+    }
+  },
   methods: {
-    playSound: function (e) {
-      // this.$emit('created', this)
-      var newSound
-      $(this.$el).parents('.containsSounds').siblings().find('button.play-sound').removeClass('btn-success').addClass('btn-primary')
-      if (this.currentSound !== null) {
-        this.currentSound.pause()
-        this.currentSound.currentTime = 0
-        $(this.currentSound).siblings('.sound-progress').attr('value', 0)
-      }
-      if (this.currentSound && $(this.$el).hasClass('btn-success')) {
-        this.currentSound.pause()
-        this.currentSound.currentTime = 0
-        newSound = this.currentSound
-        $(this.$el).removeClass('btn-success').addClass('btn-primary')
-      } else {
-        newSound = $(this.$el).children('audio')[0]
-        newSound.play()
-        $(this.$el).removeClass('btn-primary').addClass('btn-success')
-        $(newSound).on('ended', function () {
-          $(this.$el).removeClass('btn-success').addClass('btn-primary')
-          $($(this.$el).find('.sound-progress')[0]).attr('value', 0)
-        })
-      }
-      // this.$emit('click', newSound)
-      this.$store.commit('SET_CURRENT_SOUND', newSound)
-    }// ,
-    // saveEdit: function () {
-    //   this.$emit('save', this.props)
-    // },
-    // remove: function () {
-    //   this.$emit('remove', this.props)
-    // }
+    playSound: function (e) { }
   }
 }
 </script>
