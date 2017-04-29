@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import SoundButton from './sound-button'
+import SoundButton from './items/sound-button/sound-button'
 
 export default {
   name: 'sound-section',

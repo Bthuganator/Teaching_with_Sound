@@ -46,7 +46,7 @@
             </div>
             <div class="modal-body">
               <p>Some text in the modal.</p>
-              <component :is="item.type+'-edit'" v-on:save="saveRecord(item)" :props="item.data"></component>
+              <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" v-on:save="saveRecord(itemToEdit)" :props="itemToEdit.data"></component>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -77,13 +77,17 @@
 </template>
 
 <script>
-import SoundButton from './sound-button'
+import { mapGetters } from 'vuex'
 import VueGridLayout from 'vue-grid-layout'
-import GoogleMap from './google-map'
-import AudioPlayer from './audio-player'
 import Vue from 'vue'
 import $ from 'jquery'
-import { mapGetters } from 'vuex'
+// items
+import SoundButton from './items/sound-button/sound-button'
+import SoundButtonEdit from './items/sound-button/sound-button-edit'
+import GoogleMap from './items/google-map/google-map'
+import GoogleMapEdit from './items/google-map/google-map-edit'
+import AudioPlayer from './items/audio-player/audio-player'
+import AudioPlayerEdit from './items/audio-player/audio-player-edit'
 
 var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
@@ -92,15 +96,19 @@ export default {
   name: 'lesson-section',
   props: ['db'],
   components: {
-    SoundButton,
     GridLayout,
     GridItem,
+    SoundButton,
+    SoundButtonEdit,
     GoogleMap,
-    AudioPlayer
+    GoogleMapEdit,
+    AudioPlayer,
+    AudioPlayerEdit
   },
   computed: {
     ...mapGetters({
-      currentSound: 'currentSound'
+      currentSound: 'currentSound',
+      itemToEdit: 'itemToEdit'
     })
   },
   data: function () {

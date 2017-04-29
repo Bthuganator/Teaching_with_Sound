@@ -15,9 +15,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'sound-button',
   props: {
-    'props': Object,
-    'editMode': Boolean,
-    'pk': String
+    'props': Object
   },
   computed: {
     ...mapGetters({
@@ -30,12 +28,8 @@ export default {
       snd: this.props
     }
   },
-  // created: function () {
-  //   this.$emit('created', this)
-  // },
   methods: {
     playSound: function (e) {
-      // this.$emit('created', this)
       var newSound
       $(this.$el).parents('.containsSounds').siblings().find('button.play-sound').removeClass('btn-success').addClass('btn-primary')
       if (this.currentSound !== null) {
@@ -57,15 +51,8 @@ export default {
           $($(this.$el).find('.sound-progress')[0]).attr('value', 0)
         })
       }
-      // this.$emit('click', newSound)
       this.$store.commit('SET_CURRENT_SOUND', newSound)
-    }// ,
-    // saveEdit: function () {
-    //   this.$emit('save', this.props)
-    // },
-    // remove: function () {
-    //   this.$emit('remove', this.props)
-    // }
+    }
   }
 }
 </script>
