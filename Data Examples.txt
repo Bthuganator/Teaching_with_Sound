@@ -1,0 +1,60 @@
+// audio-player
+{
+ click: "undefined"
+ created: "undefined"
+ data{
+    author: "Hans Zimmer/Richard Harvey"
+    lrc: "[00:00.00]lrc here\\n[00:01.00]aplayer"
+    pic: "http://devtest.qiniudn.com/Preparation.jpg"
+    title: "Preparation"
+    url: "http://devtest.qiniudn.com/Preparation.mp3"
+  }
+ h: 2
+ i: "'2'"
+ type: "audio-player"
+ w: 3
+ x: 5
+ y: 0
+}
+
+
+// google map
+{
+ click: "undefined"
+ created: "undefined"
+ data {
+    center{
+        lat: 10
+        lng: 10
+    }
+    map_type_id: "terrain"
+    markers: "[{ id: 1,         position: {lat: 10.0, lng: 10..."
+    style: "position: absolute;top: 0;left: 0;width: 100% !..."
+    zoom: 7
+ }
+ h: 4
+ i: 7
+ type: "google-map"
+ w: 4
+ x: 8
+ y: 0
+}
+
+// sound-button
+{
+ click: "undefined"
+ created: "undefined"
+ data{
+    author: "Hans Zimmer/Richard Harvey"
+    lrc: "[00:00.00]lrc here\\n[00:01.00]aplayer"
+    pic: "http://devtest.qiniudn.com/Preparation.jpg"
+    title: "Preparation"
+    url: "http://devtest.qiniudn.com/Preparation.mp3"
+ }
+ h: 2
+ i: "'2'"
+ type: "audio-player" 
+ w: 3
+ x: 5
+ y: 0
+}

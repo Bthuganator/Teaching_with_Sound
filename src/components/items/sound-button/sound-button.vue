@@ -10,12 +10,17 @@
 
 <script>
 import $ from 'jquery'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'sound-button',
   props: {
-    'props': Object,
-    'editMode': Boolean,
-    'pk': String
+    'props': Object
+  },
+  computed: {
+    ...mapGetters({
+      currentSound: 'currentSound'
+    })
   },
   data: function () {
     return {
@@ -23,44 +28,30 @@ export default {
       snd: this.props
     }
   },
-  created: function () {
-    this.$emit('created', this)
-  },
   methods: {
-    setPk: function () {
-      $('#removeKey').val(this.pk)
-    },
     playSound: function (e) {
-      this.$emit('created', this)
       var newSound
-      var el = $(this.$el).children('button')
-      $(el).parents('.sound-well').siblings().find('button').removeClass('btn-success').addClass('btn-primary')
+      $(this.$el).parents('.containsSounds').siblings().find('button.play-sound').removeClass('btn-success').addClass('btn-primary')
       if (this.currentSound !== null) {
         this.currentSound.pause()
         this.currentSound.currentTime = 0
         $(this.currentSound).siblings('.sound-progress').attr('value', 0)
       }
-      if (this.currentSound && $(el).hasClass('btn-success')) {
+      if (this.currentSound && $(this.$el).hasClass('btn-success')) {
         this.currentSound.pause()
         this.currentSound.currentTime = 0
         newSound = this.currentSound
-        $(el).removeClass('btn-success').addClass('btn-primary')
+        $(this.$el).removeClass('btn-success').addClass('btn-primary')
       } else {
-        newSound = $(el).children('audio')[0]
+        newSound = $(this.$el).children('audio')[0]
         newSound.play()
-        $(el).removeClass('btn-primary').addClass('btn-success')
+        $(this.$el).removeClass('btn-primary').addClass('btn-success')
         $(newSound).on('ended', function () {
-          $(el).removeClass('btn-success').addClass('btn-primary')
-          $($(el).find('.sound-progress')[0]).attr('value', 0)
+          $(this.$el).removeClass('btn-success').addClass('btn-primary')
+          $($(this.$el).find('.sound-progress')[0]).attr('value', 0)
         })
       }
-      this.$emit('click', newSound)
-    },
-    saveEdit: function () {
-      this.$emit('save', this.props)
-    },
-    remove: function () {
-      this.$emit('remove', this.props)
+      this.$store.commit('SET_CURRENT_SOUND', newSound)
     }
   }
 }

@@ -5,7 +5,9 @@ const getters = {
   user: state => state.user,
   fb: state => state.fb,
   fbUI: state => state.fbUI,
-  db: state => state.db
+  db: state => state.db,
+  currentSound: state => state.currentSound,
+  itemToEdit: state => state.itemToEdit
 }
 
 Vue.use(Vuex)
@@ -14,7 +16,9 @@ const store = new Vuex.Store({
     user: null,
     fb: null,
     fbUI: null,
-    db: null
+    db: null,
+    currentSound: null,
+    itemToEdit: null
   },
   getters,
   mutations: {
@@ -29,6 +33,12 @@ const store = new Vuex.Store({
     },
     SET_DB (state, db) {
       state.db = db
+    },
+    SET_CURRENT_SOUND (state, currentSound) {
+      state.currentSound = currentSound
+    },
+    SET_ITEM_TO_EDIT (state, itemToEdit) {
+      state.itemToEdit = itemToEdit
     }
   }
 })
