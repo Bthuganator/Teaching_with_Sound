@@ -1,6 +1,6 @@
 <template>
     <div class="row sounds row-centered" style="margin-top:50px;">        
-        <div v-for="sound in sounds" class="col-md-3 sound-well col-centered" style="height:150px;">
+        <div v-for="sound in sounds" class="col-md-3 sound-well col-centered containsSounds" style="height:150px;">
             <sound-button v-on:click="updateCurrentSound" :props="sound" v-on:created="getData"></sound-button>
         </div>        
     </div>

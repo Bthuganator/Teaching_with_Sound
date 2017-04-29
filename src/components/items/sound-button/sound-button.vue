@@ -15,7 +15,9 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'sound-button',
   props: {
-    'props': Object
+    'props': Object,
+    'editMode': Boolean,
+    'pk': String
   },
   computed: {
     ...mapGetters({

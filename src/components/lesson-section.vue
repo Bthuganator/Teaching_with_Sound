@@ -21,16 +21,18 @@
                    :h='item.h'
                    :i='item.i'
                    :key='item.i'
-                   @resized='resizedEvent'>   
+                   @resized='resizedEvent(item)'
+                   @moved='movedEvent(item)'
+                   class='containsSounds'>   
 
       
           <div class="vue-grid-item-content">
                       <div v-if="editMode" class="settings">
-            <i data-toggle="modal" data-target="#editModal" class="fa fa-cog"></i>      
+            <i @click="setItemEdit(item)" data-toggle="modal" data-target="#editModal" class="fa fa-cog"></i>      
             <!--<i class="fa fa-clone"></i>-->
-            <i @click="setPk" data-toggle="modal" data-target="#removeModal" class="fa fa-trash"></i>
+            <i @click="setPk(item)" data-toggle="modal" data-target="#removeModal" class="fa fa-trash"></i>
           </div>   
-            <component :is="item.type" :pk="item['.key']" :editMode="editMode" v-on:click="item.click" v-on:created="getData" v-on:remove="removeRecord" v-on:save="saveRecord"  :props="item.data"></component>
+            <component :is="item.type" :editMode="editMode" v-on:click="item.click" v-on:remove="removeRecord" v-on:save="saveRecord(item)"  :props="item.data"></component>
           </div>                        
         </grid-item>
     </grid-layout>
@@ -44,6 +46,7 @@
             </div>
             <div class="modal-body">
               <p>Some text in the modal.</p>
+              <component :is="item.type+'-edit'" v-on:save="saveRecord(item)" :props="item.data"></component>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -80,6 +83,7 @@ import GoogleMap from './google-map'
 import AudioPlayer from './audio-player'
 import Vue from 'vue'
 import $ from 'jquery'
+import { mapGetters } from 'vuex'
 
 var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
@@ -94,9 +98,13 @@ export default {
     GoogleMap,
     AudioPlayer
   },
+  computed: {
+    ...mapGetters({
+      currentSound: 'currentSound'
+    })
+  },
   data: function () {
     return {
-      currentSound: null,
       editMode: false
     }
   },
@@ -106,17 +114,24 @@ export default {
     }
   },
   methods: {
+    setPk: function (item) {
+      $('#removeKey').val(item['.key'])
+    },
     setEditMode: function (val) {
       this.editMode = val
     },
-    updateCurrentSound: function (sound) {
-      this.currentSound = sound
-    },
-    resizedEvent: function (i, newH, newW, newHPx, newWPx) {
+    resizedEvent: function (box) {
       Vue.$gmapDefaultResizeBus.$emit('resize')
+      this.$firebaseRefs.boxes.child(box['.key']).update({
+        h: box.h,
+        w: box.w
+      })
     },
-    getData: function (child) {
-      child.currentSound = this.currentSound
+    movedEvent: function (box) {
+      this.$firebaseRefs.boxes.child(box['.key']).update({
+        x: box.x,
+        y: box.y
+      })
     },
     saveRecord: function (box) {
       this.$firebaseRefs.boxes.child(box['.key']).set(box)
@@ -150,6 +165,9 @@ export default {
     removeRecord: function (e) {
       var key = $(e.target).siblings('#removeKey').val()
       this.$firebaseRefs.boxes.child(key).remove()
+    },
+    setItemEdit: function (item) {
+      this.$store.commit('SET_ITEM_TO_EDIT', item)
     }
   }
 }
