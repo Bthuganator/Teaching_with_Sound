@@ -10,7 +10,7 @@
     },
     "soundstest":{
       ".read": "true",//auth != null",
-      ".write": "false"//"auth != null"
+      ".write": "auth != null"
     }
   }
 }

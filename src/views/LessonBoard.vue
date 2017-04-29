@@ -1,7 +1,12 @@
 <template>
-    <div class="container">                            
-        <lesson-section :boxes='boxes'></lesson-section>                            
+  <div>
+    <div class="checkbox">
+      <label><input type="checkbox" v-model="fullWidth" checked>Full Width</label>
     </div>
+    <div v-model="fullWidth" v-bind:class="fullWidth ? '' : 'container'">                            
+        <lesson-section :db='db'></lesson-section>                            
+    </div>
+  </div>
 </template>
 
 <script>
@@ -13,15 +18,15 @@ export default {
   components: {
     LessonSection
   },
+  data: function () {
+    return {
+      fullWidth: false
+    }
+  },
   computed: {
     ...mapGetters({
       db: 'db'
     })
-  },
-  firebase: function () {
-    return {
-      boxes: this.db.ref().child('soundstest').orderByChild('i')
-    }
   }
 }
 </script>
