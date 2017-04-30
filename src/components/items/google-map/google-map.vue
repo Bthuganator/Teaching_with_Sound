@@ -1,7 +1,7 @@
 <template>
 <gmap-map
-  :center='data.center'
-  :zoom='data.zoom'
+  :center='{lat: parseInt(data.center.lat), lng: parseInt(data.center.lng)}'
+  :zoom='parseInt(data.zoom)'
   :map-type-id='data.map_type_id'
   :style='data.style'
 ></gmap-map>
@@ -23,7 +23,8 @@ export default {
   props: { 'props': Object },
   data: function () {
     return {
-      data: this.props }
+      data: this.props
+    }
   }
 }
 </script>

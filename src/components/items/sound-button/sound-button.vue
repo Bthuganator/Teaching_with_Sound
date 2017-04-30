@@ -1,6 +1,6 @@
 <template>
   
-    <button class='btn btn-primary play-sound vue-grid-item-content' v-on:click='playSound(this)'>      
+    <button class='btn play-sound vue-grid-item-content' :class="snd.color"  v-on:click='playSound(this)'>      
         <i class="fa fa-3x" v-bind:class="snd.icon"></i>
         <i class="fa fa-3x" v-bind:class="snd.icon2"></i>
         <audio class='hidden' :src='snd.sound_url' :type='snd.audio_type' autostart='false' codecs='mp3'></audio>        
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import $ from 'jquery'
+import $ from 'jquery' // :class="playing ? 'btn-success' : snd.color"
 import { mapGetters } from 'vuex'
 
 export default {
@@ -20,36 +20,45 @@ export default {
   computed: {
     ...mapGetters({
       currentSound: 'currentSound'
-    })
+    }),
+    displayColor: function () {
+      console.log('test')
+      if (this.$el && this.$el.lastChild !== this.currentSound) {
+        return 'btn-success'
+      }
+      return this.snd.color
+    },
+    snd: function () {
+      return this.props
+    }
   },
   data: function () {
     return {
       duration: 0,
-      snd: this.props
+      playing: false
     }
   },
   methods: {
     playSound: function (e) {
       var newSound
-      $(this.$el).parents('.containsSounds').siblings().find('button.play-sound').removeClass('btn-success').addClass('btn-primary')
-      if (this.currentSound !== null) {
+
+      if (this.currentSound && !this.currentSound.paused) {
         this.currentSound.pause()
         this.currentSound.currentTime = 0
-        $(this.currentSound).siblings('.sound-progress').attr('value', 0)
-      }
-      if (this.currentSound && $(this.$el).hasClass('btn-success')) {
-        this.currentSound.pause()
-        this.currentSound.currentTime = 0
-        newSound = this.currentSound
-        $(this.$el).removeClass('btn-success').addClass('btn-primary')
+        if (this.$el.lastChild !== this.currentSound) {
+          $(this.currentSound).parent().attr('class', $(this.currentSound).parent().attr('class').replace('btn--', 'btn-').replace('btn-success', ''))
+          newSound = this.$el.lastChild
+          newSound.play()
+          // this.playing = true
+          this.$el.className = this.$el.className.replace('btn-', 'btn--') + ' btn-success'
+        } else {
+          this.$el.className = this.$el.className.replace('btn--', 'btn-').replace('btn-success', '')
+        }
       } else {
-        newSound = $(this.$el).children('audio')[0]
+        newSound = this.$el.lastChild
         newSound.play()
-        $(this.$el).removeClass('btn-primary').addClass('btn-success')
-        $(newSound).on('ended', function () {
-          $(this.$el).removeClass('btn-success').addClass('btn-primary')
-          $($(this.$el).find('.sound-progress')[0]).attr('value', 0)
-        })
+        this.playing = true
+        this.$el.className = this.$el.className.replace('btn-', 'btn--') + ' btn-success'
       }
       this.$store.commit('SET_CURRENT_SOUND', newSound)
     }

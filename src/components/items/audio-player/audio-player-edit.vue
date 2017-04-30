@@ -1,19 +1,25 @@
 <template>
-<a-player :music="data"></a-player>
+  <div class="">
+    <label for="author">Author</label><input type="text" id="author" v-model="item.data.author">
+    <label for="title">Title</label><input type="text" id="title" v-model="item.data.title">
+    <label for="url">Music Url</label><input type="text" id="url" v-model="item.data.url">
+    <label for="pic">Picture Url</label><input type="text" id="pic" v-model="item.data.pic">
+    <img src="item.data.pic">  
+  </div>
 </template>
 
 <script>
-import VueAplayer from 'vue-aplayer'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'audio-player',
-  props: { 'props': Object },
-  components: {
-    'a-player': VueAplayer
-  },
-  data: function () {
-    return {
-      data: this.props }
+  computed: {
+    ...mapGetters({
+      itemToEdit: 'itemToEdit'
+    }),
+    item: function () {
+      return this.itemToEdit
+    }
   }
 }
 </script>

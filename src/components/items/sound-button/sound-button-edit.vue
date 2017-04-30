@@ -1,15 +1,15 @@
 <template>
   <div class="">
-    <select>
-      <option v-for="sound in sounds" :value="sound['.key']">{{sound.display_name}}</option>
+    <select v-model="item.data.sound_url">
+      <option v-for="sound in sounds" :value="sound.sound_url">{{sound.display_name}}</option>
     </select>
-    <select>
-      <option v-for="color in colors" :value="color['.key']">
+    <select v-model="item.data.color">
+      <option v-for="color in colors" :value="color.class">
         {{color.display_name}}
         </option>
     </select>
     <ul>
-      <li v-for="icon in icons" :value="icon['.key']">
+      <li v-for="icon in icons" :value="icon.icon">
         <i class="fa" v-bind:class="icon.icon"></i>
         <i class="fa" v-bind:class="icon.icon2"></i>
         {{icon.display_name}}
@@ -23,19 +23,13 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'sound-button',
-  props: {
-    'props': Object
-  },
   computed: {
     ...mapGetters({
-      currentSound: 'currentSound',
+      itemToEdit: 'itemToEdit',
       db: 'db'
-    })
-  },
-  data: function () {
-    return {
-      duration: 0,
-      snd: this.props
+    }),
+    item: function () {
+      return this.itemToEdit
     }
   },
   firebase: function () {
@@ -44,9 +38,6 @@ export default {
       colors: this.db.ref().child('item_options/sound_button/color').orderByChild('display_name'),
       icons: this.db.ref().child('item_options/sound_button/icon').orderByChild('display_name')
     }
-  },
-  methods: {
-    playSound: function (e) { }
   }
 }
 </script>

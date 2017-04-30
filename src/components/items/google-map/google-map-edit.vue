@@ -1,29 +1,29 @@
 <template>
-<gmap-map
-  :center='data.center'
-  :zoom='data.zoom'
-  :map-type-id='data.map_type_id'
-  :style='data.style'
-></gmap-map>
+  <div class="">
+    <label for="lat">Latitude</label><input type="number" id="lat" v-model="item.data.center.lat">
+    <label for="lng">Longitude</label><input type="number" id="lng" v-model="item.data.center.lng">
+    <label for="type">Type</label>
+    <select id="type" v-model="item.data.map_type_id">
+      <option value="terrain">Terrain</option>
+      <option value="roadmap">Road Map</option>
+    </select>
+   <label for="zoom">Zoom</label>
+   <input type="number" id="zoom" v-model="item.data.zoom">
+  </div>
 </template>
 
 <script>
-import * as VueGoogleMaps from 'vue2-google-maps'
-import Vue from 'vue'
+import { mapGetters } from 'vuex'
 
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyCDAwyz1SV3tPNqXe50_okQ5G5iDjpilJk'
-    // v: 'OPTIONAL VERSION NUMBER'
-    // libraries: 'places', //// If you need to use place input
-  }
-})
 export default {
   name: 'google-map',
-  props: { 'props': Object },
-  data: function () {
-    return {
-      data: this.props }
+  computed: {
+    ...mapGetters({
+      itemToEdit: 'itemToEdit'
+    }),
+    item: function () {
+      return this.itemToEdit
+    }
   }
 }
 </script>

@@ -19,8 +19,8 @@
                    :y='item.y'
                    :w='item.w'
                    :h='item.h'
-                   :i='item.i'
-                   :key='item.i'
+                   :i="item.i"
+                   :key="item.i"
                    @resized='resizedEvent(item)'
                    @moved='movedEvent(item)'
                    class='containsSounds'>   
@@ -32,7 +32,7 @@
             <!--<i class="fa fa-clone"></i>-->
             <i @click="setPk(item)" data-toggle="modal" data-target="#removeModal" class="fa fa-trash"></i>
           </div>   
-            <component :is="item.type" :editMode="editMode" v-on:click="item.click" v-on:remove="removeRecord" v-on:save="saveRecord(item)"  :props="item.data"></component>
+            <component :is="item.type" :editMode="editMode" v-on:remove="removeRecord" v-on:save="saveRecord(item)"  :props="item.data"></component>
           </div>                        
         </grid-item>
     </grid-layout>
@@ -46,10 +46,10 @@
             </div>
             <div class="modal-body">
               <p>Some text in the modal.</p>
-              <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" v-on:save="saveRecord(itemToEdit)" :props="itemToEdit.data"></component>
+              <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button @click="saveRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
             </div>
           </div>
         </div>
@@ -129,7 +129,9 @@ export default {
       this.editMode = val
     },
     resizedEvent: function (box) {
-      Vue.$gmapDefaultResizeBus.$emit('resize')
+      if (box.type === 'google-map') {
+        Vue.$gmapDefaultResizeBus.$emit('resize')
+      }
       this.$firebaseRefs.boxes.child(box['.key']).update({
         h: box.h,
         w: box.w
@@ -141,13 +143,18 @@ export default {
         y: box.y
       })
     },
-    saveRecord: function (box) {
-      this.$firebaseRefs.boxes.child(box['.key']).set(box)
+    saveRecord: function (item) {
+      this.$firebaseRefs.boxes.child(item['.key'] + '/data').update(item.data)
+      this.$store.commit('SET_ITEM_TO_EDIT', item)
     },
     addRecord: function (box) {
       box = {
-        'click': 'updateCurrentSound',
-        'created': 'getData',
+        'position': {
+          'h': 4,
+          'w': 4,
+          'x': 1,
+          'y': 10
+        },
         'data': {
           '_id': '1234',
           'attribution': '',
@@ -175,6 +182,7 @@ export default {
       this.$firebaseRefs.boxes.child(key).remove()
     },
     setItemEdit: function (item) {
+      console.log('test')
       this.$store.commit('SET_ITEM_TO_EDIT', item)
     }
   }
