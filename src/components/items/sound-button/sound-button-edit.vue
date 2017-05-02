@@ -1,21 +1,39 @@
 <template>
-  <div class="">
-    <select v-model="item.data.sound_url">
+<form>
+  <div class="form-group">
+    <label for="soundUrl">Sound Clip</label>    
+    <select class="form-control" id="soundUrl" v-model="item.data.sound_url">
       <option v-for="sound in sounds" :value="sound.sound_url">{{sound.display_name}}</option>
     </select>
-    <select v-model="item.data.color">
+  </div>
+  <div class="form-group">
+    <label for="soundColor">Sound Color</label>
+    <select id="soundColor" class="form-control" v-model="item.data.color">
       <option v-for="color in colors" :value="color.class">
         {{color.display_name}}
         </option>
     </select>
-    <ul>
-      <li v-for="icon in icons" :value="icon.icon">
-        <i class="fa" v-bind:class="icon.icon"></i>
-        <i class="fa" v-bind:class="icon.icon2"></i>
-        {{icon.display_name}}
-        </li>
-    </ul>    
+    <!--<p class="help-block">Example block-level help text here.</p>-->
   </div>
+  <div class="form-group">
+    <label for="soundIcon1">Icon 1</label>    
+    <select id="soundIcon1" class="form-control" v-model="item.data.icon">
+      <option v-for="icon in icons" :value="icon.icon">
+        <i class="fa" v-bind:class="icon.icon"></i>
+        {{icon.display_name}}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="soundIcon2">Sound Clip</label>    
+    <select id="soundIcon2" class="form-control" v-model="item.data.icon2">
+      <option v-for="icon in icons" :value="icon.icon">
+        <i class="fa" v-bind:class="icon.icon"></i>
+        {{icon.display_name}}
+      </option>
+    </select>
+  </div>    
+</form>
 </template>
 
 <script>
@@ -32,7 +50,7 @@ export default {
       if (this.itemToEdit.data === null) {
         this.$set(this.itemToEdit, 'w', 4)
         this.$set(this.itemToEdit, 'h', 2)
-        this.$set(this.itemToEdit, 'data', {sound_url: ''})
+        this.$set(this.itemToEdit, 'data', {'sound_url': '', 'icon': '', 'icon2': ''})
       }
       return this.itemToEdit
     }

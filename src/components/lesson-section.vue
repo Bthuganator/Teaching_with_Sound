@@ -253,4 +253,7 @@ export default {
 .vue-grid-item:hover .settings {
 
 }
+.form-group label{
+  float: left;
+}
 </style>

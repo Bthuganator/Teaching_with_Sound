@@ -1,15 +1,24 @@
 <template>
-  <div class="">
-    <label for="lat">Latitude</label><input type="number" id="lat" v-model="item.data.center.lat">
-    <label for="lng">Longitude</label><input type="number" id="lng" v-model="item.data.center.lng">
-    <label for="type">Type</label>
-    <select id="type" v-model="item.data.map_type_id">
-      <option value="terrain">Terrain</option>
-      <option value="roadmap">Road Map</option>
+  <form>
+    <div class="form-group">
+      <label for="lat">Latitude</label>  
+      <input type="number" id="lat" class="form-control" v-model="item.data.center.lat">
+    </div>
+    <div class="form-group">
+      <label for="lng">Longitude</label> 
+      <input type="number" id="lng" class="form-control" v-model="item.data.center.lng">
+    </div>
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select id="type" class="form-control" v-model="item.data.map_type_id">
+        <option v-for="mapType in map_types" :value="mapType.value">{{mapType.display_name}}</option>
     </select>
-   <label for="zoom">Zoom</label>
-   <input type="number" id="zoom" v-model="item.data.zoom">
-  </div>
+    </div>
+    <div class="form-group">
+      <label for="zoom">Zoom</label>
+      <input type="number" id="zoom" class="form-control" v-model="item.data.zoom">
+    </div>              
+  </form>
 </template>
 
 <script>
@@ -19,7 +28,8 @@ export default {
   name: 'google-map',
   computed: {
     ...mapGetters({
-      itemToEdit: 'itemToEdit'
+      itemToEdit: 'itemToEdit',
+      db: 'db'
     }),
     item: function () {
       if (this.itemToEdit.data === null) {
@@ -35,6 +45,11 @@ export default {
         this.$set(this.itemToEdit, 'h', 2)
       }
       return this.itemToEdit
+    }
+  },
+  firebase: function () {
+    return {
+      map_types: this.db.ref().child('item_options/google_map/map_types').orderByChild('display_name')
     }
   }
 }
