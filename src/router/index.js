@@ -6,6 +6,7 @@ import Home from '@/views/Home'
 import NotFound from '@/views/NotFound'
 import SoundBoard from '@/views/SoundBoard'
 import LessonBoard from '@/views/LessonBoard'
+import Boards from '@/views/Boards'
 import Login from '@/views/Login'
 // import Firebase from 'firebase'
 // import db from '../js/firebase-db'
@@ -45,7 +46,7 @@ export default new Router({
       path: '/Boards',
       name: 'Boards',
       components: { navbar: NavBar, default: Boards, footer: Footer }
-    },    
+    },
     {
       path: '/Lesson-Board',
       name: 'LessonBoard',
@@ -63,7 +64,7 @@ export default new Router({
       name: 'SoundBoard',
       components: { navbar: NavBar, default: SoundBoard, footer: Footer }// ,
       // props: { db: database }
-    }, //, meta:{requiresAuth:true} },    
+    }, //, meta:{requiresAuth:true} },
     {
       path: '*',
       components: { navbar: NavBar, default: NotFound, footer: Footer }
