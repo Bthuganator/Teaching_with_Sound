@@ -11,9 +11,10 @@ export default {
   components: {
     'a-player': VueAplayer
   },
-  data: function () {
-    return {
-      data: this.props }
+  computed: {
+    data: function () {
+      return this.props
+    }
   }
 }
 </script>
