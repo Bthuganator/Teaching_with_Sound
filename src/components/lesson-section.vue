@@ -2,14 +2,14 @@
     <div class='row sounds row-centered' style='margin-top:50px;'>
       <button class="btn btn-success" v-on:click="setEditMode(false)" v-if="editMode">Display Mode</button>
       <button class="btn btn-primary" v-on:click="setEditMode(true)" v-else>Edit Mode</button>
-      <button class="btn btn-success" v-on:click="addRecord({})" v-if="editMode">Add Record</button>
+      <button class="btn btn-success" v-on:click="setItemEdit(itemToAdd)" data-toggle="modal" data-target="#addModal" v-if="editMode">Add Record</button>
         <grid-layout
             :layout='boxes'
             :col-num='12'
             :row-height='30'
             :is-draggable='editMode'
             :is-resizable='editMode'
-            :vertical-compact='true'
+            :vertical-compact='false'
             :margin='[10, 10]'
             :use-css-transforms='true'
     >
@@ -44,12 +44,11 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">Modal Header</h4>
             </div>
-            <div class="modal-body">
-              <p>Some text in the modal.</p>
+            <div class="modal-body">              
               <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button @click="saveRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+              <button @click="addRecord(itemToAdd)" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
             </div>
           </div>
         </div>
@@ -73,6 +72,26 @@
           </div>
         </div>
       </div>
+
+      <div id="addModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+              <select v-model="itemToAdd.type" v-on:change="setItemEdit(itemToAdd)">
+                <option v-for="itemType in item_types" :value="itemType.type">{{itemType.display_name}}</option>
+              </select>           
+              <component v-if="itemToEdit != null" :is="itemToAdd.type+'-edit'" :data="itemToEdit"></component>
+            </div>
+            <div class="modal-footer">
+              <button @click="addRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -88,6 +107,7 @@ import GoogleMap from './items/google-map/google-map'
 import GoogleMapEdit from './items/google-map/google-map-edit'
 import AudioPlayer from './items/audio-player/audio-player'
 import AudioPlayerEdit from './items/audio-player/audio-player-edit'
+import BlankEdit from './items/blank-edit'
 
 var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
@@ -103,7 +123,8 @@ export default {
     GoogleMap,
     GoogleMapEdit,
     AudioPlayer,
-    AudioPlayerEdit
+    AudioPlayerEdit,
+    BlankEdit
   },
   computed: {
     ...mapGetters({
@@ -113,18 +134,30 @@ export default {
   },
   data: function () {
     return {
-      editMode: false
+      editMode: false,
+      itemToAdd: {
+        type: 'blank',
+        data: null
+      }
     }
   },
   firebase: function () {
     return {
-      boxes: this.db.ref().child('soundstest').orderByChild('i')
+      boxes: this.db.ref().child('soundstest').orderByChild('i'),
+      item_types: this.db.ref().child('item_options').orderByChild('display_name')
     }
   },
   methods: {
     setPk: function (item) {
       $('#removeKey').val(item['.key'])
     },
+    // setAdd: function (type) {
+    //   this.itemToAdd.type = type
+    //   var that = this
+    //   Vue.nextTick(function () {
+    //     that.setItemEdit(that.itemToAdd)
+    //   })
+    // },
     setEditMode: function (val) {
       this.editMode = val
     },
@@ -148,33 +181,30 @@ export default {
       this.$store.commit('SET_ITEM_TO_EDIT', item)
     },
     addRecord: function (box) {
-      box = {
-        'position': {
-          'h': 4,
-          'w': 4,
-          'x': 1,
-          'y': 10
-        },
-        'data': {
-          '_id': '1234',
-          'attribution': '',
-          'audio_type': 'audio/mpeg',
-          'display_name': 'Applause',
-          'icon': 'fa-hand-paper-o move-right',
-          'icon2': 'fa-hand-paper-o rotate-45',
-          'play_count': 0,
-          'sound_origin_url': '',
-          'sound_url': 'https://firebasestorage.googleapis.com/v0/b/teaching-with-sound.appspot.com/o/Sounds%2Fapplause.mp3?alt=media&token=e08b4b25-b2d7-433b-a167-931c236d40fe'
-        },
-        'h': 4,
-        'i': '\'5\'',
-        'type': 'sound-button',
-        'w': 4,
-        'x': 1,
-        'y': 10,
-        // '.key': '0',
-        'moved': false
-      }
+      // box.i = new Date().getTime()
+      // box = {
+      //   'data': {
+      //    // '_id': '1234',
+      //     'attribution': '',
+      //     'audio_type': 'audio/mpeg',
+      //     'display_name': 'Applause',
+      //     'icon': 'fa-hand-paper-o move-right',
+      //     'icon2': 'fa-hand-paper-o rotate-45',
+      //     'play_count': 0,
+      //     'sound_origin_url': '',
+      //     'sound_url': 'https://firebasestorage.googleapis.com/v0/b/teaching-with-sound.appspot.com/o/Sounds%2Fapplause.mp3?alt=media&token=e08b4b25-b2d7-433b-a167-931c236d40fe'
+      //   },
+      //   'h': 4,
+      //   'i': new Date().getTime().toString(),
+      //   'type': 'sound-button',
+      //   'w': 4,
+      //   'x': 1,
+      //   'y': 10,
+      //   'moved': false
+      // }
+      box.i = new Date().getTime().toString()
+      box.x = 0
+      box.y = 0
       this.$firebaseRefs.boxes.push(box)
     },
     removeRecord: function (e) {
@@ -182,7 +212,6 @@ export default {
       this.$firebaseRefs.boxes.child(key).remove()
     },
     setItemEdit: function (item) {
-      console.log('test')
       this.$store.commit('SET_ITEM_TO_EDIT', item)
     }
   }
