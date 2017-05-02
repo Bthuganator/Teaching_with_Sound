@@ -24,19 +24,13 @@ export default {
     item: function () {
       if (this.itemToEdit.data === null) {
         this.itemToEdit.data = Object.assign({}, this.itemToEdit.data, {
-          center: {
-            lat: 0,
-            lng: 0
-          },
-          terrain: 'roadmap',
+          center: {},
+          map_type_id: 'roadmap',
           zoom: 1,
           style: 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;'
         })
-        // this.$set(this.itemToEdit.data, 'center', {})
-        // this.$set(this.itemToEdit.data.center, 'lat', 0)
-        // this.$set(this.itemToEdit.data.center, 'lng', 0)
-        // this.$set(this.itemToEdit.data, 'style', 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;')
-        // this.$set(this.itemToEdit.data, 'zoom', 1)
+        this.$set(this.itemToEdit.data.center, 'lat', 0)
+        this.$set(this.itemToEdit.data.center, 'lng', 0)
         this.$set(this.itemToEdit, 'w', 4)
         this.$set(this.itemToEdit, 'h', 2)
       }

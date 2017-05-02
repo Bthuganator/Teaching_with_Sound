@@ -18,6 +18,10 @@ export default {
       itemToEdit: 'itemToEdit'
     }),
     item: function () {
+      if (this.itemToEdit.data === null) {
+        this.$set(this.itemToEdit, 'w', 4)
+        this.$set(this.itemToEdit, 'h', 2)
+      }
       return this.itemToEdit
     }
   }

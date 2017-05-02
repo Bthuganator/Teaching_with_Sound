@@ -48,7 +48,7 @@
               <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button @click="addRecord(itemToAdd)" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+              <button @click="saveRecord(itemToAdd)" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
             </div>
           </div>
         </div>

@@ -29,6 +29,11 @@ export default {
       db: 'db'
     }),
     item: function () {
+      if (this.itemToEdit.data === null) {
+        this.$set(this.itemToEdit, 'w', 4)
+        this.$set(this.itemToEdit, 'h', 2)
+        this.$set(this.itemToEdit, 'data', {sound_url: ''})
+      }
       return this.itemToEdit
     }
   },
