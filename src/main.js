@@ -10,10 +10,10 @@ import { fb, fbUI, db } from './js/firebaseConfig'
 Vue.use(VueFire)
 Vue.config.productionTip = false
 
-fb.auth().onAuthStateChanged(
-  function (user) {
-    store.commit('SET_USER', user)
-  })
+// fb.auth().onAuthStateChanged(
+//   function (user) {
+//     store.commit('SET_USER', user)
+//   })
 
 store.commit('SET_FB', fb)
 store.commit('SET_DB', db)
@@ -25,6 +25,17 @@ new Vue({
   router,
   template: '<App/>',
   store,
-  components: { App } // ,
+  components: { App },
+  beforeCreate () {
+    fb.auth().onAuthStateChanged((user) => {
+      // initially user = null, after auth it will be either <fb_user> or false
+      this.$store.commit('SET_USER', user || false)
+      if (user && this.$route.path === '/login') {
+        this.$router.replace('/')
+      } else if (!user && this.$route.path !== '/login') {
+        this.$router.replace('/login')
+      }
+    })
+  }
   // firebase: { soundsRef, aboutRef }
 })

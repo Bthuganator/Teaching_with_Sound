@@ -1,33 +1,33 @@
 <template>
-  <div>
-    <div class="checkbox">
-      <label><input type="checkbox" v-model="fullWidth" checked>Boards</label>
+      <div class="container">  
+        <div class="row">
+          <div class="col-md-12">  
+            <h3>Boards</h3>               
+            <board-section></board-section>                         
+        </div>
+      </div>
     </div>
-    <!--<div v-model="fullWidth" v-bind:class="fullWidth ? '' : 'container'">                            
-        <lesson-section :db='db'></lesson-section>                            
-    </div>-->
-  </div>
 </template>
 
 <script>
-// import LessonSection from '../components/lesson-section'
-import { mapGetters } from 'vuex'
+import BoardSection from '../components/board-section'
+// import { mapGetters } from 'vuex'
 
 export default {
-  name: 'LessonBoard',
-//   components: {
-//     LessonSection
-//   },
+  name: 'Boards',
+  components: {
+    BoardSection
+  },
   data: function () {
     return {
       fullWidth: false
     }
-  },
-  computed: {
-    ...mapGetters({
-      db: 'db'
-    })
-  }
+  }// ,
+  // computed: {
+  //   ...mapGetters({
+  //     db: 'db'
+  //   })
+  // }
 }
 </script>
 

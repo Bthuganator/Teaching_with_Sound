@@ -15,6 +15,10 @@
     "item_options":{
       ".read": "true",
       ".write": "false"
+    },
+    "boards":{
+      ".read": "true",
+      ".write": "auth != null"
     }
   }
 }
