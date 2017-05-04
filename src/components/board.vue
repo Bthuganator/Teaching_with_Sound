@@ -1,5 +1,6 @@
 <template>
     <div class='row sounds row-centered' style='margin-top:50px;'>
+      {{boardid}}
       <button class="btn btn-success" v-on:click="setEditMode(false)" v-if="editMode">Display Mode</button>
       <button class="btn btn-primary" v-on:click="setEditMode(true)" v-else>Edit Mode</button>
       <button class="btn btn-success" v-on:click="setItemEdit(itemToAdd)" data-toggle="modal" data-target="#addModal" v-if="editMode">Add Record</button>
@@ -113,8 +114,8 @@ var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
 
 export default {
-  name: 'lesson-section',
-  props: ['db'],
+  name: 'Board',
+  props: ['db', 'boardid'],
   components: {
     GridLayout,
     GridItem,
@@ -129,8 +130,15 @@ export default {
   computed: {
     ...mapGetters({
       currentSound: 'currentSound',
-      itemToEdit: 'itemToEdit'
-    })
+      itemToEdit: 'itemToEdit',
+      user: 'user'
+    }),
+    userId: function () {
+      return this.user.uid
+    },
+    boardId: function () {
+      return this.$route.params.boardid
+    }
   },
   data: function () {
     return {
@@ -142,8 +150,10 @@ export default {
     }
   },
   firebase: function () {
+    console.log('test')
     return {
-      items: this.db.ref().child('soundstest').orderByChild('i'),
+      board: this.db.ref('boards/' + this.userId + '/' + this.boardId), // .child('items').orderByChild('i'),
+      items: this.db.ref('boards/' + this.userId + '/' + this.boardId + '/items').orderByChild('id'),
       item_types: this.db.ref().child('item_options').orderByChild('display_name')
     }
   },
@@ -180,7 +190,7 @@ export default {
       this.$firebaseRefs.items.child(item['.key'] + '/data').update(item.data)
       this.$store.commit('SET_ITEM_TO_EDIT', item)
     },
-    addRecord: function (box) {      
+    addRecord: function (box) {
       box.i = new Date().getTime().toString()
       box.x = 0
       box.y = 0

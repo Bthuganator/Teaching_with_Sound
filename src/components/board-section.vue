@@ -10,8 +10,8 @@
     <table class="table">
         <tr><th colspan="1">Boards</th></tr>
         <tr v-for="board in boards">                
-            <td class="col-md-2">
-                <a href="/Board/board.id">{{board.display_name}}</a>
+            <td class="col-md-2">                
+                <router-link :to="{ name: 'Board', params: { boardid: board['.key'] }}">{{board.display_name}}</router-link>
             </td>
         </tr>
     </table>
@@ -38,7 +38,23 @@ export default {
       boards: null,
       boardToAdd: {
         display_name: '',
-        items: null,
+        items: {
+          0: {
+            data: {
+              author: 'Hans Zimmer/Richard Harvey',
+              lrc: '[00:00.00]lrc here\\n[00:01.00]aplayer',
+              pic: 'http://devtest.qiniudn.com/Preparation.jpg',
+              title: 'Preparation',
+              url: 'http://devtest.qiniudn.com/Preparation.mp3'
+            },
+            h: 2,
+            i: '\'2\'',
+            type: 'audio-player',
+            w: 3,
+            x: 5,
+            y: 0
+          }
+        },
         full_width: false
       }
     }

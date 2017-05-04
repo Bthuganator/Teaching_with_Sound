@@ -4,19 +4,20 @@
       <label><input type="checkbox" v-model="fullWidth" checked>Full Width</label>
     </div>
     <div v-model="fullWidth" v-bind:class="fullWidth ? '' : 'container'">                            
-        <lesson-section :db='db'></lesson-section>                            
+        <board :db='db' :id='boardid'></board>                            
     </div>
   </div>
 </template>
 
 <script>
-import LessonSection from '../components/lesson-section'
+import Board from '../components/board'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'LessonBoard',    
+  name: 'Board-View',
+  props: ['boardid'],
   components: {
-    LessonSection
+    Board
   },
   data: function () {
     return {

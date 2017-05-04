@@ -25,7 +25,7 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="soundIcon2">Sound Clip</label>    
+    <label for="soundIcon2">Icon 2</label>    
     <select id="soundIcon2" class="form-control" v-model="item.data.icon2">
       <option v-for="icon in icons" :value="icon.icon">
         <i class="fa" v-bind:class="icon.icon"></i>
