@@ -152,8 +152,11 @@ export default {
   firebase: function () {
     console.log('test')
     return {
-      board: this.db.ref('boards/' + this.userId + '/' + this.boardId), // .child('items').orderByChild('i'),
-      items: this.db.ref('boards/' + this.userId + '/' + this.boardId + '/items').orderByChild('id'),
+      // board: this.db.ref('boards/' + this.userId + '/' + this.boardId), // .child('items').orderByChild('i'),
+      board: this.db.ref('boards/' + this.boardId), // .child('items').orderByChild('i'),
+      // items: this.db.ref('items').orderByChild('boards').equalTo(this.boardId)
+      items: this.db.ref('items/' + this.boardId).orderByChild('display_name'),
+      // items: this.db.ref('boards/' + this.userId + '/' + this.boardId + '/items').orderByChild('id'),
       item_types: this.db.ref().child('item_options').orderByChild('display_name')
     }
   },

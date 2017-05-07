@@ -1,0 +1,29 @@
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\gschr\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase deploy
+[debug] CLI Version:  3.5.0
+[debug] Platform:     win32
+[debug] Node Version: v6.10.0
+[debug] Time:         Sat May 06 2017 21:14:27 GMT-0500 (Central Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[debug] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/8XFNUyrM4hWxh9vHBhQY7cIYB1mQXaABt7GyMW_ZDYE',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sat May 06 2017 21:14:27 GMT-0500 (Central Daylight Time)
+[debug] <<< HTTP RESPONSE 200
+[debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/teaching-with-sound  
+ Sat May 06 2017 21:14:27 GMT-0500 (Central Daylight Time)
+[debug] <<< HTTP RESPONSE 200
+[debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/teaching-with-sound/tokens  
+ Sat May 06 2017 21:14:28 GMT-0500 (Central Daylight Time)
+[debug] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'teaching-with-sound'...
+[info] 
+[info] i  deploying database, hosting
+[info] +  database: rules ready to deploy.
+[info] i  hosting: preparing dist directory for upload...

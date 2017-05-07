@@ -9,7 +9,7 @@ import firebase from 'firebase'
 import { mapGetters } from 'vuex'
 
 const uiConfig = {
-  signInSuccessUrl: '/Lesson-Board',
+  signInSuccessUrl: '/Boards',
   signInOptions: [
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,

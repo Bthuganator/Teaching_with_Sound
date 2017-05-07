@@ -18,6 +18,12 @@
                     <li>
                         <router-link to="/Sound-Board">Soundboard</router-link>
                     </li>
+                    <li v-if="theUser">                        
+                        <router-link to="/Lesson-Board">Lesson Board</router-link>                        
+                    </li>  
+                    <li v-if="theUser">                        
+                        <router-link to="/Boards">Boards</router-link>                        
+                    </li>  
                     <li>
                         <router-link to="/#about">About</router-link>
                     </li>
