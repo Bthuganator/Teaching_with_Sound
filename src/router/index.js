@@ -7,7 +7,9 @@ import NotFound from '@/views/NotFound'
 import SoundBoard from '@/views/SoundBoard'
 import LessonBoard from '@/views/LessonBoard'
 import Boards from '@/views/Boards'
+import Board from '@/views/Board-View'
 import Login from '@/views/Login'
+// import { fb } from '@/js/firebaseConfig'
 // import Firebase from 'firebase'
 // import db from '../js/firebase-db'
 // var database = db.database()
@@ -43,9 +45,16 @@ export default new Router({
       // }
     },
     {
+      path: '/Board/:boardid',
+      name: 'Board',
+      components: { navbar: NavBar, default: Board, footer: Footer }
+      // props: { user: fb.auth().currentUser }
+    },
+    {
       path: '/Boards',
       name: 'Boards',
       components: { navbar: NavBar, default: Boards, footer: Footer }
+      // props: { user: fb.auth().currentUser }
     },
     {
       path: '/Lesson-Board',

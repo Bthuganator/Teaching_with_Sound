@@ -1,20 +1,21 @@
 <template>
     <div class='row sounds row-centered' style='margin-top:50px;'>
+      {{boardid}}
       <button class="btn btn-success" v-on:click="setEditMode(false)" v-if="editMode">Display Mode</button>
       <button class="btn btn-primary" v-on:click="setEditMode(true)" v-else>Edit Mode</button>
       <button class="btn btn-success" v-on:click="setItemEdit(itemToAdd)" data-toggle="modal" data-target="#addModal" v-if="editMode">Add Record</button>
         <grid-layout
-            :layout='boxes'
+            :layout='items'
             :col-num='12'
             :row-height='30'
             :is-draggable='editMode'
             :is-resizable='editMode'
             :vertical-compact='false'
             :margin='[10, 10]'
-            :use-css-transforms='true'
+            :use-css-transforms='false'
     >
  
-        <grid-item v-for='item in boxes'
+        <grid-item v-for='item in items'
                    :x='item.x'
                    :y='item.y'
                    :w='item.w'
@@ -113,8 +114,8 @@ var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
 
 export default {
-  name: 'lesson-section',
-  props: ['db'],
+  name: 'Board',
+  props: ['db', 'boardid'],
   components: {
     GridLayout,
     GridItem,
@@ -129,8 +130,15 @@ export default {
   computed: {
     ...mapGetters({
       currentSound: 'currentSound',
-      itemToEdit: 'itemToEdit'
-    })
+      itemToEdit: 'itemToEdit',
+      user: 'user'
+    }),
+    userId: function () {
+      return this.user.uid
+    },
+    boardId: function () {
+      return this.$route.params.boardid
+    }
   },
   data: function () {
     return {
@@ -142,8 +150,13 @@ export default {
     }
   },
   firebase: function () {
+    console.log('test')
     return {
-      boxes: this.db.ref().child('soundstest').orderByChild('i'),
+      // board: this.db.ref('boards/' + this.userId + '/' + this.boardId), // .child('items').orderByChild('i'),
+      board: this.db.ref('boards/' + this.boardId), // .child('items').orderByChild('i'),
+      // items: this.db.ref('items').orderByChild('boards').equalTo(this.boardId)
+      items: this.db.ref('items/' + this.boardId).orderByChild('display_name'),
+      // items: this.db.ref('boards/' + this.userId + '/' + this.boardId + '/items').orderByChild('id'),
       item_types: this.db.ref().child('item_options').orderByChild('display_name')
     }
   },
@@ -165,30 +178,30 @@ export default {
       if (box.type === 'google-map') {
         Vue.$gmapDefaultResizeBus.$emit('resize')
       }
-      this.$firebaseRefs.boxes.child(box['.key']).update({
+      this.$firebaseRefs.items.child(box['.key']).update({
         h: box.h,
         w: box.w
       })
     },
     movedEvent: function (box) {
-      this.$firebaseRefs.boxes.child(box['.key']).update({
+      this.$firebaseRefs.items.child(box['.key']).update({
         x: box.x,
         y: box.y
       })
     },
     saveRecord: function (item) {
-      this.$firebaseRefs.boxes.child(item['.key'] + '/data').update(item.data)
+      this.$firebaseRefs.items.child(item['.key'] + '/data').update(item.data)
       this.$store.commit('SET_ITEM_TO_EDIT', item)
     },
     addRecord: function (box) {
       box.i = new Date().getTime().toString()
       box.x = 0
       box.y = 0
-      this.$firebaseRefs.boxes.push(box)
+      this.$firebaseRefs.items.push(box)
     },
     removeRecord: function (e) {
       var key = $(e.target).siblings('#removeKey').val()
-      this.$firebaseRefs.boxes.child(key).remove()
+      this.$firebaseRefs.items.child(key).remove()
     },
     setItemEdit: function (item) {
       this.$store.commit('SET_ITEM_TO_EDIT', item)
