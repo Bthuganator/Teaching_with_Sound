@@ -12,7 +12,7 @@
             :is-resizable='editMode'
             :vertical-compact='false'
             :margin='[10, 10]'
-            :use-css-transforms='true'
+            :use-css-transforms='false'
     >
  
         <grid-item v-for='item in items'

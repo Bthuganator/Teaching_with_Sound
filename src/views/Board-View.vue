@@ -1,8 +1,9 @@
 <template>
   <div>
     <div class="checkbox">      
-      <label><input type="checkbox" v-on:change="updateBoard(board)" v-model="board.full_width">Full Width</label>
-    </div>
+      <label><input type="checkbox" v-on:change="updateBoard(board)" v-model="board.full_width">Full Width</label>      
+    </div>          
+
     <div  v-bind:class="board.full_width ? '' : 'container'">                            
         <board :db='db' :id='boardid'></board>                            
     </div>
