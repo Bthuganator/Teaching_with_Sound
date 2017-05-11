@@ -40,7 +40,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'sound-button',
+  name: 'sound-button-edit',
   computed: {
     ...mapGetters({
       itemToEdit: 'itemToEdit',
@@ -49,7 +49,7 @@ export default {
     item: function () {
       if (this.itemToEdit.data === null) {
         this.$set(this.itemToEdit, 'w', 4)
-        this.$set(this.itemToEdit, 'h', 2)
+        this.$set(this.itemToEdit, 'h', 4)
         this.$set(this.itemToEdit, 'data', {'sound_url': '', 'icon': '', 'icon2': ''})
       }
       return this.itemToEdit

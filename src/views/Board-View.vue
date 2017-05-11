@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="checkbox">      
+    <!--<div class="checkbox">      
       <label><input type="checkbox" v-on:change="updateBoard(board)" v-model="board.full_width">Full Width</label>      
-    </div>          
+    </div>-->    
 
-    <div  v-bind:class="board.full_width ? '' : 'container'">                            
+    <div  v-bind:class=""> <!--board.full_width ? '' : 'container'                           -->
         <board :db='db' :id='boardid'></board>                            
     </div>
   </div>
@@ -20,11 +20,11 @@ export default {
   components: {
     Board
   },
-  data: function () {
-    return {
-      full_width: false
-    }
-  },
+  // data: function () {
+  //   return {
+  //     full_width: false
+  //   }
+  // },
   computed: {
     ...mapGetters({
       db: 'db'

@@ -34,9 +34,9 @@
                         <a href="#" v-if="theUser" @click="signOut">Log Off</a>
                         <router-link v-else to="/Login">Login</router-link>                        
                     </li>                    
-                    <li v-if="theUser">
+                  <!--  <li v-if="theUser">
                         <a href="#">Hello, {{theUser.displayName}}</a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

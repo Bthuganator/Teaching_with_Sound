@@ -24,7 +24,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'audio-player',
+  name: 'audio-player-edit',
   computed: {
     ...mapGetters({
       itemToEdit: 'itemToEdit'

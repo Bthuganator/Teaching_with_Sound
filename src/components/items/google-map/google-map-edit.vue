@@ -25,7 +25,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'google-map',
+  name: 'google-map-edit',
   computed: {
     ...mapGetters({
       itemToEdit: 'itemToEdit',

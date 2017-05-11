@@ -5,21 +5,33 @@
       <label for="boardName">Board Name</label>
       <input type="text" id="boardName" class="form-control" v-model="boardToAdd.display_name">
     </div>             
-    <button @click.prevent="addRecord(boardToAdd)" class="btn btn-success"><i class="fa fa-plus"></i> Add</button> 
+    <button @click.prevent="addRecord(boardToAdd)" class="btn btn-success marginb"><i class="fa fa-plus"></i> Add</button> 
+
   </form>  
-    <table class="table">
-        <tr><th colspan="1">Boards</th></tr>
+    <table class="table table-striped">
+      <thead>
+        <tr><th>Boards</th><th>Created Date</th><th></th></tr>
+      </thead>
+      <tbody>
         <tr v-for="board in boards">                
             <td class="col-md-2">                
-                <router-link :to="{ name: 'Board', params: { boardid: board['.key'] }}">{{board.display_name}}</router-link> <i @click="removeRecord(board)" class="fa fa-trash"></i>
+                <router-link :to="{ name: 'Board', params: { boardid: board['.key'] }}">{{board.display_name}}</router-link>
+            </td>
+            <td>
+              {{board.created_date}}
+            </td>
+            <td>
+            <i @click="removeRecord(board)" class="fa fa-trash pull-right"></i>
             </td>
         </tr>
+      </tbody>
     </table>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
   name: 'board-section',
@@ -55,7 +67,7 @@ export default {
         //     y: 0
         //   }
         // },
-        full_width: false
+        full_width: true
       }
     }
   },
@@ -75,6 +87,7 @@ export default {
       // console.log('test')
       board.id = new Date().getTime().toString()
       board.board_owner = this.userId
+      board.created_date = moment().format('MM/DD/YYYY hh:mm')
       // board.users = {}
       // board.users[this.userId] = 'full'
       var newBoard = this.$firebaseRefs.boards.push(board)
