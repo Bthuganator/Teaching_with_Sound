@@ -49,7 +49,7 @@
               <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button @click="saveRecord(itemToAdd)" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+              <button @click="saveRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
               <component v-if="itemToEdit != null" :is="itemToAdd.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button @click="addRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span> Add</button>
+              <button @click="addRecord(itemToAdd)" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span> Add</button>
             </div>
           </div>
         </div>
@@ -207,7 +207,7 @@ export default {
       this.$firebaseRefs.items.push(box)
     },
     removeRecord: function (e) {
-      var key = $(e.target).siblings('#removeKey').val()
+      var key = $(e.target).parents('.modal-footer').find('#removeKey').val()
       this.$firebaseRefs.items.child(key).remove()
     },
     setItemEdit: function (item) {

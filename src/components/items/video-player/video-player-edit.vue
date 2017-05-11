@@ -3,16 +3,15 @@
     <div class="form-group">
       <label for="author">Video URL</label>
       <input type="text" id="author" class="form-control" v-model="item.data.video.url">
-    </div>
-    <div class="form-group">
-      <label for="title">Autoplay</label>
-      <input type="text" id="title" class="form-control" v-model="item.data.autoplay">
-    </div>   
+    </div>  
     <div class="form-group">
       <label for="pic">Preview Picture URL</label>
       <input type="text" id="pic" class="form-control" v-model="item.data.video.pic">
-      <img class="previewPic" :src="item.data.pic">  
-    </div>              
+      <img class="previewPic" :src="item.data.video.pic">  
+    </div>
+    <div class="checkbox text-left">      
+      <label><input type="checkbox" v-model="item.data.autoplay">Autoplay</label>      
+    </div>           
   </form>  
 </template>
 
@@ -31,13 +30,8 @@ export default {
           video: {},
           autoplay: false
         })
-        // this.$set(this.itemToEdit.data.source, {
-        //     src: 'http://covteam.u.qiniudn.com/oceans.mp4',
-        //     type: 'video/mp4'})
-        // this.$set(this.itemToEdit.data.options, {
-        //     autoplay: true,
-        //     volume: 0.6,
-        //     poster: 'http://covteam.u.qiniudn.com/poster.png'})
+        this.$set(this.itemToEdit.data.video, 'url', '')// http://static.smartisanos.cn/common/video/t1-ui.mp4
+        this.$set(this.itemToEdit.data.video, 'pic', '')// http://static.smartisanos.cn/pr/img/video/video_03_cc87ce5bdb.jpg
         this.$set(this.itemToEdit, 'w', 4)
         this.$set(this.itemToEdit, 'h', 2)
       }
