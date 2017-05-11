@@ -2,7 +2,7 @@
 <form>
     <div class="form-group">
       <label for="author">Video URL</label>
-      <input type="text" id="author" class="form-control" v-model="item.data.video.src">
+      <input type="text" id="author" class="form-control" v-model="item.data.video.url">
     </div>
     <div class="form-group">
       <label for="title">Autoplay</label>
