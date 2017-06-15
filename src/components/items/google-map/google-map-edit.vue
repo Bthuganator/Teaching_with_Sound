@@ -32,17 +32,22 @@ export default {
       db: 'db'
     }),
     item: function () {
-      if (this.itemToEdit.data === null) {
-        this.itemToEdit.data = Object.assign({}, this.itemToEdit.data, {
-          center: {},
-          map_type_id: 'roadmap',
-          zoom: 1,
-          style: 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;'
-        })
-        this.$set(this.itemToEdit.data.center, 'lat', 0)
-        this.$set(this.itemToEdit.data.center, 'lng', 0)
-        this.$set(this.itemToEdit, 'w', 4)
-        this.$set(this.itemToEdit, 'h', 2)
+      if (this.itemToEdit.data === null || this.itemToEdit.type !== 'google-map') {
+        var newItemToEdit = {
+          data: {
+            center: {
+              lat: 0,
+              lng: 0
+            },
+            map_type_id: 'roadmap',
+            zoom: 1,
+            style: 'position: absolute;top: 0;left: 0;width: 100% !important;height: 100% !important;'
+          },
+          type: 'google-map',
+          w: 4,
+          h: 2
+        }
+        this.$store.commit('SET_ITEM_TO_EDIT', newItemToEdit)
       }
       return this.itemToEdit
     }

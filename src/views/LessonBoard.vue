@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="checkbox">
+    <div class="checkbox marginl">
       <label><input type="checkbox" v-model="fullWidth" checked>Full Width</label>
     </div>
     <div v-model="fullWidth" v-bind:class="fullWidth ? '' : 'container'">                            

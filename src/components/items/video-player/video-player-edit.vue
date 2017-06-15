@@ -3,16 +3,15 @@
     <div class="form-group">
       <label for="author">Video URL</label>
       <input type="text" id="author" class="form-control" v-model="item.data.video.url">
-    </div>
-    <div class="form-group">
-      <label for="title">Autoplay</label>
-      <input type="text" id="title" class="form-control" v-model="item.data.autoplay">
-    </div>   
+    </div>  
     <div class="form-group">
       <label for="pic">Preview Picture URL</label>
       <input type="text" id="pic" class="form-control" v-model="item.data.video.pic">
-      <img class="previewPic" :src="item.data.pic">  
-    </div>              
+      <img class="previewPic" :src="item.data.video.pic">  
+    </div>
+    <div class="checkbox text-left">      
+      <label><input type="checkbox" v-model="item.data.autoplay">Autoplay</label>      
+    </div>           
   </form>  
 </template>
 
@@ -26,20 +25,20 @@ export default {
       itemToEdit: 'itemToEdit'
     }),
     item: function () {
-      if (this.itemToEdit.data === null) {
-        this.itemToEdit.data = Object.assign({}, this.itemToEdit.data, {
-          video: {},
-          autoplay: false
-        })
-        // this.$set(this.itemToEdit.data.source, {
-        //     src: 'http://covteam.u.qiniudn.com/oceans.mp4',
-        //     type: 'video/mp4'})
-        // this.$set(this.itemToEdit.data.options, {
-        //     autoplay: true,
-        //     volume: 0.6,
-        //     poster: 'http://covteam.u.qiniudn.com/poster.png'})
-        this.$set(this.itemToEdit, 'w', 4)
-        this.$set(this.itemToEdit, 'h', 2)
+      if (this.itemToEdit.data === null || this.itemToEdit.type !== 'video-player') {
+        var newItemToEdit = {
+          data: {
+            video: {
+              url: '',
+              pic: ''
+            },
+            autoplay: false
+          },
+          type: 'video-player',
+          w: 4,
+          h: 2
+        }
+        this.$store.commit('SET_ITEM_TO_EDIT', newItemToEdit)
       }
       return this.itemToEdit
     }

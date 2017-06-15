@@ -18,7 +18,7 @@
                     <li>
                         <router-link to="/Sound-Board">Soundboard</router-link>
                     </li>
-                    <li v-if="theUser">                        
+                    <li>                        
                         <router-link to="/Lesson-Board">Lesson Board</router-link>                        
                     </li>  
                     <li v-if="theUser">                        
@@ -30,7 +30,7 @@
                     <li>                        
                         <router-link to="/#contact">Contact</router-link>
                     </li>
-                    <li v-if="theUser">                        
+                    <li>                        
                         <a href="#" v-if="theUser" @click="signOut">Log Off</a>
                         <router-link v-else to="/Login">Login</router-link>                        
                     </li>                    

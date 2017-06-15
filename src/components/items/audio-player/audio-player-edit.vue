@@ -30,9 +30,19 @@ export default {
       itemToEdit: 'itemToEdit'
     }),
     item: function () {
-      if (this.itemToEdit.data === null) {
-        this.$set(this.itemToEdit, 'w', 4)
-        this.$set(this.itemToEdit, 'h', 2)
+      if (this.itemToEdit.data === null || this.itemToEdit.type !== 'audio-player') {
+        var newItemToEdit = {
+          data: {
+            author: '',
+            url: '',
+            pic: '',
+            title: ''
+          },
+          type: 'audio-player',
+          w: 4,
+          h: 2
+        }
+        this.$store.commit('SET_ITEM_TO_EDIT', newItemToEdit)
       }
       return this.itemToEdit
     }

@@ -1,20 +1,21 @@
 <template>
     <div class='row sounds row-centered' style='margin-top:50px;'>
-      <button class="btn btn-success" v-on:click="setEditMode(false)" v-if="editMode">Display Mode</button>
-      <button class="btn btn-primary" v-on:click="setEditMode(true)" v-else>Edit Mode</button>
-      <button class="btn btn-success" v-on:click="setItemEdit(itemToAdd)" data-toggle="modal" data-target="#addModal" v-if="editMode">Add Record</button>
+      {{boardid}}
+      <button class="btn btn-success" v-on:click="setEditMode(false)" v-if="editMode"><i class="fa fa-television"></i> Display</button>
+      <button class="btn btn-primary" v-on:click="setEditMode(true)" v-else><span class="glyphicon glyphicon-cog"></span> Edit</button>
+      <button class="btn btn-success" v-on:click="setItemEdit(itemToAdd)" data-toggle="modal" data-target="#addModal" v-if="editMode"><span class="glyphicon glyphicon-plus"></span> Add Item</button>
         <grid-layout
-            :layout='boxes'
+            :layout='items'
             :col-num='12'
             :row-height='30'
             :is-draggable='editMode'
             :is-resizable='editMode'
             :vertical-compact='false'
             :margin='[10, 10]'
-            :use-css-transforms='true'
+            :use-css-transforms='false'
     >
  
-        <grid-item v-for='item in boxes'
+        <grid-item v-for='item in items'
                    :x='item.x'
                    :y='item.y'
                    :w='item.w'
@@ -42,13 +43,13 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Modal Header</h4>
+              <h4 class="modal-title">Edit Item</h4>
             </div>
             <div class="modal-body">              
               <component v-if="itemToEdit != null" :is="itemToEdit.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button @click="saveRecord(itemToAdd)" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+              <button @click="saveRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
             </div>
           </div>
         </div>
@@ -59,15 +60,15 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Remove Element</h4>
+              <h4 class="modal-title">Remove Item</h4>
             </div>
             <div class="modal-body">
-              <p>Are you sure you want to delete this element?</p>
+              <p>Are you sure you want to delete this item?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
               <input type="hidden" id="removeKey" value="">
-              <button @click="removeRecord" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+              <button @click="removeRecord" type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-trash"></span> Delete</button>
             </div>
           </div>
         </div>
@@ -78,16 +79,19 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Modal Header</h4>
+              <h4 class="modal-title">Add Item</h4>
             </div>
-            <div class="modal-body">
-              <select v-model="itemToAdd.type" v-on:change="setItemEdit(itemToAdd)">
-                <option v-for="itemType in item_types" :value="itemType.type">{{itemType.display_name}}</option>
-              </select>           
+            <div class="modal-body">     
+              <div class="form-group">  
+                <label for="itemTypeSelect">Item Type</label>       
+                <select id="itemTypeSelect" class="form-control marginb" v-model="itemToAdd.type" v-on:change="setItemEdit(itemToAdd)">
+                  <option v-for="itemType in item_types" :value="itemType.type">{{itemType.display_name}}</option>
+                </select> 
+              </div>          
               <component v-if="itemToEdit != null" :is="itemToAdd.type+'-edit'" :data="itemToEdit"></component>
             </div>
             <div class="modal-footer">
-              <button @click="addRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal">Add</button>
+              <button @click="addRecord(itemToEdit)" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span> Add</button>
             </div>
           </div>
         </div>
@@ -107,14 +111,16 @@ import GoogleMap from './items/google-map/google-map'
 import GoogleMapEdit from './items/google-map/google-map-edit'
 import AudioPlayer from './items/audio-player/audio-player'
 import AudioPlayerEdit from './items/audio-player/audio-player-edit'
+import VideoPlayer from './items/video-player/video-player'
+import VideoPlayerEdit from './items/video-player/video-player-edit'
 import BlankEdit from './items/blank-edit'
 
 var GridLayout = VueGridLayout.GridLayout
 var GridItem = VueGridLayout.GridItem
 
 export default {
-  name: 'lesson-section',
-  props: ['db'],
+  name: 'Board',
+  props: ['db', 'boardid'],
   components: {
     GridLayout,
     GridItem,
@@ -124,6 +130,8 @@ export default {
     GoogleMapEdit,
     AudioPlayer,
     AudioPlayerEdit,
+    VideoPlayer,
+    VideoPlayerEdit,
     BlankEdit
   },
   computed: {
@@ -142,8 +150,9 @@ export default {
     }
   },
   firebase: function () {
+    console.log('test')
     return {
-      boxes: this.db.ref().child('soundstest').orderByChild('i'),
+      items: this.db.ref('soundstest').orderByChild('display_name'),
       item_types: this.db.ref().child('item_options').orderByChild('display_name')
     }
   },
@@ -151,13 +160,6 @@ export default {
     setPk: function (item) {
       $('#removeKey').val(item['.key'])
     },
-    // setAdd: function (type) {
-    //   this.itemToAdd.type = type
-    //   var that = this
-    //   Vue.nextTick(function () {
-    //     that.setItemEdit(that.itemToAdd)
-    //   })
-    // },
     setEditMode: function (val) {
       this.editMode = val
     },
@@ -165,30 +167,30 @@ export default {
       if (box.type === 'google-map') {
         Vue.$gmapDefaultResizeBus.$emit('resize')
       }
-      this.$firebaseRefs.boxes.child(box['.key']).update({
+      this.$firebaseRefs.items.child(box['.key']).update({
         h: box.h,
         w: box.w
       })
     },
     movedEvent: function (box) {
-      this.$firebaseRefs.boxes.child(box['.key']).update({
+      this.$firebaseRefs.items.child(box['.key']).update({
         x: box.x,
         y: box.y
       })
     },
     saveRecord: function (item) {
-      this.$firebaseRefs.boxes.child(item['.key'] + '/data').update(item.data)
+      this.$firebaseRefs.items.child(item['.key'] + '/data').update(item.data)
       this.$store.commit('SET_ITEM_TO_EDIT', item)
     },
     addRecord: function (box) {
       box.i = new Date().getTime().toString()
       box.x = 0
       box.y = 0
-      this.$firebaseRefs.boxes.push(box)
+      this.$firebaseRefs.items.push(box)
     },
     removeRecord: function (e) {
-      var key = $(e.target).siblings('#removeKey').val()
-      this.$firebaseRefs.boxes.child(key).remove()
+      var key = $(e.target).parents('.modal-footer').find('#removeKey').val()
+      this.$firebaseRefs.items.child(key).remove()
     },
     setItemEdit: function (item) {
       this.$store.commit('SET_ITEM_TO_EDIT', item)
