@@ -47,10 +47,19 @@ export default {
       db: 'db'
     }),
     item: function () {
-      if (this.itemToEdit.data === null) {
-        this.$set(this.itemToEdit, 'w', 4)
-        this.$set(this.itemToEdit, 'h', 4)
-        this.$set(this.itemToEdit, 'data', {'sound_url': '', 'icon': '', 'icon2': ''})
+      if (this.itemToEdit.data === null || this.itemToEdit.type !== 'sound-button') {
+        var newItemToEdit = {
+          data: {
+            sound_url: '',
+            icon: '',
+            icon2: '',
+            color: ''
+          },
+          type: 'sound-button',
+          w: 4,
+          h: 4
+        }
+        this.$store.commit('SET_ITEM_TO_EDIT', newItemToEdit)
       }
       return this.itemToEdit
     }

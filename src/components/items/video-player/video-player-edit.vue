@@ -25,15 +25,20 @@ export default {
       itemToEdit: 'itemToEdit'
     }),
     item: function () {
-      if (this.itemToEdit.data === null) {
-        this.itemToEdit.data = Object.assign({}, this.itemToEdit.data, {
-          video: {},
-          autoplay: false
-        })
-        this.$set(this.itemToEdit.data.video, 'url', '')// http://static.smartisanos.cn/common/video/t1-ui.mp4
-        this.$set(this.itemToEdit.data.video, 'pic', '')// http://static.smartisanos.cn/pr/img/video/video_03_cc87ce5bdb.jpg
-        this.$set(this.itemToEdit, 'w', 4)
-        this.$set(this.itemToEdit, 'h', 2)
+      if (this.itemToEdit.data === null || this.itemToEdit.type !== 'video-player') {
+        var newItemToEdit = {
+          data: {
+            video: {
+              url: '',
+              pic: ''
+            },
+            autoplay: false
+          },
+          type: 'video-player',
+          w: 4,
+          h: 2
+        }
+        this.$store.commit('SET_ITEM_TO_EDIT', newItemToEdit)
       }
       return this.itemToEdit
     }
